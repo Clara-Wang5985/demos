@@ -1,0 +1,1040 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>森灵小队 · 亲子公园打卡 H5</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%231B5E20'/%3E%3Cpath d='M22 9c-7 0-11 3.6-11 8.6 0 2 .8 3.6 2 4.8C14.5 17.2 17.2 14.6 22 13.6c-4 1.9-6.4 4.5-7.6 8.4 1 .5 2.2.8 3.4.8 3.2 0 5.6-2.2 5.6-5.2C23.4 15.2 22.8 11.6 22 9z' fill='%23A5D6A7'/%3E%3C/svg%3E">
+<style>
+/* ============ 外层：作品集版面 ============ */
+*,*::before,*::after{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{
+  margin:0;
+  background:#EFF2E7;
+  color:#1B2A1E;
+  font-family:"PingFang SC","Microsoft YaHei","Noto Sans SC",-apple-system,"Segoe UI",sans-serif;
+  font-size:16px;line-height:1.7;
+  -webkit-font-smoothing:antialiased;
+}
+img,svg{display:block}
+button{font:inherit;color:inherit;border:0;background:none;cursor:pointer}
+.wrap{max-width:1272px;margin:0 auto;padding:clamp(26px,4vw,68px) clamp(20px,4vw,56px) 76px}
+
+/* 刊头 */
+.mast{
+  display:flex;align-items:flex-end;justify-content:space-between;gap:20px;
+  border-bottom:1px solid #D2DCC3;padding-bottom:14px;
+}
+.mast-id{font-size:13.5px;line-height:1.5;color:#5C7052;letter-spacing:.01em}
+.mast-id b{display:block;font-size:15px;font-weight:600;color:#1B2A1E;letter-spacing:.02em}
+.mast-no{font-size:13.5px;color:#7A8C6E;white-space:nowrap}
+.mast-no em{font-style:normal;font-weight:600;color:#2E7D32}
+
+/* 双栏 */
+.grid{display:grid;grid-template-columns:minmax(320px,430px) 375px;gap:clamp(36px,6vw,104px);justify-content:center;margin-top:clamp(32px,5vw,64px)}
+
+/* 说明栏 */
+.brief{max-width:430px}
+.brief h2{
+  margin:0;font-size:clamp(34px,3.3vw,46px);line-height:1.12;letter-spacing:-.015em;
+  font-weight:700;color:#14301A;
+}
+.brief .tagline{margin:16px 0 0;font-size:18px;line-height:1.7;color:#3C5140;max-width:34ch}
+.facts{display:grid;grid-template-columns:76px 1fr;gap:6px 14px;margin:26px 0 0;font-size:14px}
+.facts dt{color:#7A8C6E}
+.facts dd{margin:0;color:#22331F}
+.facts dd.state{color:#2E7D32;font-weight:600}
+
+.blk{margin-top:36px;padding-top:24px;border-top:1px solid #DCE3CC}
+.blk h3{margin:0 0 14px;font-size:13px;font-weight:600;color:#6F8259;letter-spacing:.02em}
+.blk p{margin:0;font-size:15px;line-height:1.8;color:#2A3B27}
+.did{margin:0;padding:0;list-style:none}
+.did li{position:relative;padding-left:22px;margin-bottom:10px;font-size:15px;line-height:1.75;color:#2A3B27}
+.did li::before{content:"";position:absolute;left:2px;top:.62em;width:7px;height:7px;border-radius:2px;background:#A9C08B;transform:rotate(45deg)}
+
+/* 体验闭环 */
+.loop{margin:0;padding:0;list-style:none}
+.loop li{display:grid;grid-template-columns:64px 14px 1fr;align-items:start;gap:0 10px;padding-bottom:18px}
+.loop li:last-child{padding-bottom:0}
+.loop .when{font-size:13px;color:#6F8259;padding-top:2px;line-height:1.6}
+.loop .dot{position:relative;display:flex;justify-content:center;height:100%}
+.loop .dot::before{content:"";position:absolute;top:0;bottom:-18px;width:1px;background:#D2DCC3}
+.loop li:last-child .dot::before{display:none}
+.loop .dot i{position:relative;width:9px;height:9px;border-radius:50%;background:#2E7D32;margin-top:5px;z-index:1}
+.loop li:first-child .dot i{background:#FFB300}
+.loop .what{font-size:14.5px;line-height:1.7;color:#22331F}
+.loop .what b{display:block;font-weight:600}
+
+/* 技术条目 */
+.tech{margin:0;padding:0;list-style:none;font-size:14px;line-height:1.9;color:#2A3B27}
+.tech li{display:flex;gap:8px;align-items:baseline}
+.tech li + li{margin-top:2px}
+.tech code{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:12.5px;background:#E4EAD6;color:#31502C;padding:1px 6px;border-radius:4px;white-space:nowrap}
+.note{margin-top:14px;font-size:13.5px;line-height:1.7;color:#6F8259;padding:12px 14px;border-left:2px solid #C8D8A8;background:rgba(255,255,255,.5)}
+
+/* 设备 */
+.stage{justify-self:center}
+.device{position:sticky;top:22px;width:375px}
+.frame{
+  width:100%;padding:11px;border-radius:50px;
+  background:linear-gradient(155deg,#2C3C2E 0%,#141C15 45%,#0C120D 100%);
+  box-shadow:0 44px 70px -30px rgba(18,40,20,.55),0 3px 10px rgba(10,25,12,.25),
+             inset 0 0 0 1px rgba(255,255,255,.07);
+}
+.screen{
+  position:relative;height:812px;border-radius:40px;overflow:hidden;
+  container-type:inline-size;
+  background:#F1F8E9;
+  display:flex;flex-direction:column;
+  isolation:isolate;
+}
+.notch{
+  position:absolute;top:10px;left:50%;transform:translateX(-50%);
+  width:104px;height:26px;border-radius:14px;background:#0C120D;z-index:60;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.12);
+}
+.caption{margin:22px 0 0;font-size:13px;line-height:1.7;color:#6F8259;text-align:center;max-width:335px}
+.caption b{color:#2E7D32;font-weight:600}
+
+/* 手机端：收成全屏 */
+@media (max-width:900px){
+  .wrap{padding:0}
+  .mast,.brief,.caption{display:none}
+  .grid{display:block;margin:0}
+  .stage{justify-self:stretch}
+  .device{position:static;width:100%;top:auto}
+  .frame{padding:0;border-radius:0;background:#F1F8E9;box-shadow:none}
+  .screen{height:100dvh;border-radius:0}
+  .notch{display:none}
+}
+
+/* ============ 手机内：小程序复刻 ============ */
+/* rpx 换算：750rpx = 100% 屏宽 → 1rpx = 0.13333cqw，等比缩放 */
+.screen{--r:.13333cqw;
+  --main-green:#1B5E20;--green:#2E7D32;--leaf:#4CAF50;--gold:#FFB300;--lgold:#FFD54F;
+  --text-main:#263238;--text-sub:#607D8B;--card:rgba(255,255,255,.92);
+  font-family:"PingFang SC","Microsoft YaHei","Noto Sans SC",-apple-system,sans-serif;
+  color:var(--text-main);
+  background:linear-gradient(180deg,#E8F5E9 0%,#F1F8E9 100%);
+  font-size:calc(28 * var(--r));
+}
+/* 小程序导航栏 */
+.appbar{
+  flex:none;position:relative;background:linear-gradient(90deg,#256B29,#2E7D32);
+  color:#fff;display:flex;flex-direction:column;align-items:center;
+  padding-top:max(calc(46 * var(--r)),42px);padding-bottom:calc(18 * var(--r));
+  z-index:20;
+}
+.appbar .ttl{font-size:calc(34 * var(--r));font-weight:600;letter-spacing:calc(1 * var(--r))}
+/* 滚动区 */
+.body{flex:1;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch;position:relative;scrollbar-width:none}
+.body::-webkit-scrollbar{display:none}
+
+/* ---- 首页 ---- */
+.s-pad{padding:calc(24 * var(--r)) calc(24 * var(--r)) calc(40 * var(--r))}
+.sbanner{position:relative;height:calc(320 * var(--r));border-radius:calc(20 * var(--r));overflow:hidden;
+  box-shadow:0 calc(8 * var(--r)) calc(32 * var(--r)) rgba(27,94,32,.15);margin-bottom:calc(24 * var(--r))}
+.sslide{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:center;
+  padding:0 calc(40 * var(--r));color:#fff;opacity:0;transition:opacity .55s ease}
+.sslide.on{opacity:1}
+.sslide.s1{background:linear-gradient(135deg,#1B5E20 0%,#4CAF50 100%)}
+.sslide.s2{background:linear-gradient(135deg,#FF8F00 0%,#FFD54F 100%)}
+.sslide .h{font-size:calc(44 * var(--r));font-weight:700;letter-spacing:calc(2 * var(--r));margin-bottom:calc(12 * var(--r))}
+.sslide .s{font-size:calc(26 * var(--r));opacity:.92}
+.sdots{position:absolute;left:0;right:0;bottom:calc(18 * var(--r));display:flex;justify-content:center;gap:calc(10 * var(--r))}
+.sdots i{width:calc(10 * var(--r));height:calc(10 * var(--r));border-radius:50%;background:rgba(255,255,255,.45);transition:background .3s}
+.sdots i.on{background:#fff}
+
+.scard{background:var(--card);backdrop-filter:blur(calc(10 * var(--r)));
+  border-radius:calc(20 * var(--r));padding:calc(32 * var(--r));margin-bottom:calc(24 * var(--r));
+  box-shadow:0 calc(8 * var(--r)) calc(32 * var(--r)) rgba(27,94,32,.08);
+  border:calc(1 * var(--r)) solid rgba(255,255,255,.6)}
+.sfunc{padding:calc(40 * var(--r)) calc(20 * var(--r))}
+.fgrid{display:flex;justify-content:space-around}
+.fitem{flex:1;display:flex;flex-direction:column;align-items:center;gap:0}
+.fico{width:calc(110 * var(--r));height:calc(110 * var(--r));border-radius:50%;display:flex;align-items:center;justify-content:center;
+  font-size:calc(50 * var(--r));line-height:1;margin-bottom:calc(16 * var(--r));animation:sfloat 3s ease-in-out infinite}
+.fitem:nth-child(2) .fico{animation-delay:.5s}
+.fitem:nth-child(3) .fico{animation-delay:1s}
+.fico.i1{background:linear-gradient(135deg,#A5D6A7,#66BB6A)}
+.fico.i2{background:linear-gradient(135deg,#FFE082,#FFB300)}
+.fico.i3{background:linear-gradient(135deg,#81D4FA,#29B6F6)}
+.fname{font-size:calc(28 * var(--r));font-weight:700;color:var(--text-main)}
+.fdesc{font-size:calc(22 * var(--r));color:var(--text-sub);margin-top:calc(4 * var(--r))}
+.fitem:active .fico{transform:scale(.94);transition:transform .12s}
+
+/* 区块标题 */
+.st{display:flex;align-items:center;gap:calc(12 * var(--r));font-size:calc(34 * var(--r));font-weight:700;
+  color:var(--main-green);margin-bottom:calc(24 * var(--r))}
+.st::before{content:"";width:calc(8 * var(--r));height:calc(28 * var(--r));border-radius:calc(4 * var(--r));
+  background:linear-gradient(180deg,var(--gold),var(--leaf))}
+
+/* IP 列表 */
+.iplist{display:flex;flex-wrap:wrap}
+.ipitem{width:33.333%;display:flex;flex-direction:column;align-items:center;padding-bottom:calc(24 * var(--r))}
+.ipitem:active .ipav{transform:scale(.94)}
+.ipav{width:calc(100 * var(--r));height:calc(100 * var(--r));border-radius:50%;display:flex;align-items:center;justify-content:center;
+  font-size:calc(44 * var(--r));color:#fff;margin-bottom:calc(12 * var(--r));
+  box-shadow:0 calc(4 * var(--r)) calc(12 * var(--r)) rgba(0,0,0,.12);transition:transform .15s}
+.ipname{font-size:calc(26 * var(--r));font-weight:700}
+.iprole{font-size:calc(22 * var(--r));color:var(--text-sub);margin-top:calc(4 * var(--r))}
+
+/* 分区行 */
+.arow{display:flex;align-items:center;padding:calc(24 * var(--r)) 0;border-bottom:calc(1 * var(--r)) solid rgba(0,0,0,.05)}
+.arow:last-child{border-bottom:none;padding-bottom:0}
+.arow:first-child{padding-top:0}
+.aico{flex:none;width:calc(80 * var(--r));height:calc(80 * var(--r));border-radius:calc(16 * var(--r));
+  display:flex;align-items:center;justify-content:center;font-size:calc(36 * var(--r));
+  background:rgba(76,175,80,.1);margin-right:calc(20 * var(--r))}
+.ainfo{flex:1;min-width:0}
+.aname{font-size:calc(28 * var(--r));font-weight:700;margin-bottom:calc(6 * var(--r))}
+.adesc{font-size:calc(24 * var(--r));color:var(--text-sub);line-height:1.4}
+
+/* ---- 打卡页 ---- */
+.prog{background:linear-gradient(135deg,#2E7D32,#4CAF50);border-radius:calc(20 * var(--r));
+  padding:calc(30 * var(--r));color:#fff;margin-bottom:calc(24 * var(--r));
+  box-shadow:0 calc(8 * var(--r)) calc(24 * var(--r)) rgba(46,125,50,.22)}
+.prog .pt{font-size:calc(34 * var(--r));font-weight:700;margin-bottom:calc(8 * var(--r))}
+.prog .ps{font-size:calc(26 * var(--r));opacity:.9;margin-bottom:calc(18 * var(--r))}
+.pbar{height:calc(16 * var(--r));border-radius:calc(8 * var(--r));background:rgba(255,255,255,.28);overflow:hidden}
+.pfill{height:100%;border-radius:calc(8 * var(--r));background:linear-gradient(90deg,#FFD54F,#FFB300);transition:width .6s cubic-bezier(.2,.8,.3,1)}
+
+.ckrow{display:flex;align-items:flex-start;gap:calc(18 * var(--r));padding:calc(26 * var(--r)) 0;
+  border-bottom:calc(1 * var(--r)) solid rgba(0,0,0,.05)}
+.ckrow:last-child{border-bottom:none;padding-bottom:0}
+.ckrow .aico{margin-right:0}
+.ckmain{flex:1;min-width:0}
+.ckname{font-size:calc(30 * var(--r));font-weight:700;line-height:1.3;margin-bottom:calc(8 * var(--r))}
+.ckdesc{font-size:calc(23 * var(--r));color:var(--text-sub);line-height:1.5;margin-bottom:calc(8 * var(--r))}
+.ckip{font-size:calc(22 * var(--r));color:#8FA6A6}
+.ckip b{color:var(--green);font-weight:600}
+.ckact{flex:none;display:flex;flex-direction:column;align-items:center;gap:calc(10 * var(--r));padding-top:calc(6 * var(--r))}
+.btnck{background:linear-gradient(135deg,#2E7D32,#66BB6A);color:#fff;font-size:calc(26 * var(--r));font-weight:600;
+  padding:calc(14 * var(--r)) calc(30 * var(--r));border-radius:calc(50 * var(--r));
+  box-shadow:0 calc(6 * var(--r)) calc(16 * var(--r)) rgba(46,125,50,.28);white-space:nowrap}
+.btnck:active{transform:scale(.96)}
+.linkbtn{font-size:calc(22 * var(--r));color:var(--text-sub);text-decoration:underline;text-underline-offset:calc(3 * var(--r))}
+.stampview{width:calc(96 * var(--r));height:calc(96 * var(--r));border-radius:50%;
+  border:calc(3 * var(--r)) solid rgba(255,179,0,.75);display:flex;align-items:center;justify-content:center;
+  font-size:calc(20 * var(--r));font-weight:700;color:#B98200;line-height:1.15;text-align:center;
+  background:radial-gradient(circle at 50% 40%,#FFFDF3,#FFF3D6);
+  box-shadow:0 calc(4 * var(--r)) calc(14 * var(--r)) rgba(255,179,0,.25) ;animation:sstamp .55s cubic-bezier(.2,1.4,.5,1) both}
+
+/* ---- 日记页 ---- */
+.btnadd{display:block;width:100%;padding:calc(22 * var(--r)) 0;border-radius:calc(50 * var(--r));
+  background:linear-gradient(135deg,#FFB300,#FFD54F);color:#5D4037;font-size:calc(30 * var(--r));font-weight:600;
+  box-shadow:0 calc(6 * var(--r)) calc(20 * var(--r)) rgba(255,179,0,.3);margin-bottom:calc(26 * var(--r))}
+.btnadd:active{transform:scale(.985)}
+.dcard{position:relative;overflow:hidden;animation:sfadeup .4s ease backwards}
+.dcard::before{content:"";position:absolute;left:0;top:0;width:calc(8 * var(--r));height:100%;
+  background:linear-gradient(180deg,var(--gold),var(--leaf))}
+.dhead{display:flex;justify-content:space-between;align-items:baseline;gap:calc(16 * var(--r));
+  padding-bottom:calc(16 * var(--r));margin-bottom:calc(18 * var(--r));border-bottom:calc(1 * var(--r)) dashed rgba(0,0,0,.08)}
+.dtitle{font-size:calc(30 * var(--r));font-weight:700;color:var(--main-green);min-width:0}
+.ddate{flex:none;font-size:calc(22 * var(--r));color:var(--text-sub)}
+.dimg{width:100%;height:calc(300 * var(--r));object-fit:cover;border-radius:calc(12 * var(--r));margin-bottom:calc(18 * var(--r))}
+.dtext{font-size:calc(26 * var(--r));line-height:1.75;color:var(--text-main);margin-bottom:calc(18 * var(--r));white-space:pre-wrap;word-break:break-word}
+.dfoot{display:flex;justify-content:flex-end}
+.mood{background:rgba(255,179,0,.15);color:#C98A00;padding:calc(6 * var(--r)) calc(20 * var(--r));
+  border-radius:calc(20 * var(--r));font-size:calc(22 * var(--r));font-weight:500}
+.empty{text-align:center;padding:calc(72 * var(--r)) calc(30 * var(--r))}
+.empty .ei{font-size:calc(96 * var(--r));line-height:1;margin-bottom:calc(20 * var(--r));animation:sfloat 3s ease-in-out infinite}
+.empty .et{font-size:calc(30 * var(--r));font-weight:500;margin-bottom:calc(10 * var(--r))}
+.empty .es{font-size:calc(24 * var(--r));color:var(--text-sub);line-height:1.6}
+
+/* ---- 我的 ---- */
+.ucard{position:relative;overflow:hidden;border-radius:calc(20 * var(--r));
+  background:linear-gradient(135deg,#1B5E20 0%,#4CAF50 100%);color:#fff;padding:calc(40 * var(--r)) calc(32 * var(--r));
+  display:flex;align-items:center;margin-bottom:calc(24 * var(--r));box-shadow:0 calc(8 * var(--r)) calc(32 * var(--r)) rgba(27,94,32,.22)}
+.ucard::before{content:"🍃";position:absolute;right:calc(-20 * var(--r));top:calc(-30 * var(--r));
+  font-size:calc(200 * var(--r));opacity:.1;line-height:1}
+.uav{flex:none;width:calc(120 * var(--r));height:calc(120 * var(--r));border-radius:50%;display:flex;align-items:center;justify-content:center;
+  font-size:calc(58 * var(--r));background:rgba(255,255,255,.2);border:calc(4 * var(--r)) solid rgba(255,255,255,.3);
+  margin-right:calc(24 * var(--r))}
+.uinfo{flex:1;min-width:0;position:relative;z-index:1}
+.uname{font-size:calc(36 * var(--r));font-weight:700;margin-bottom:calc(8 * var(--r))}
+.udesc{font-size:calc(24 * var(--r));opacity:.92;margin-bottom:calc(14 * var(--r))}
+.ubar{height:calc(12 * var(--r));border-radius:calc(6 * var(--r));background:rgba(255,255,255,.22);overflow:hidden}
+.ufill{height:100%;border-radius:calc(6 * var(--r));background:linear-gradient(90deg,#FFD54F,#FFB300);transition:width .5s}
+.stats{display:flex;padding:calc(34 * var(--r)) 0;text-align:center}
+.sitem{flex:1;border-right:calc(1 * var(--r)) solid #EEEEEE}
+.sitem:last-child{border-right:none}
+.snum{font-size:calc(40 * var(--r));font-weight:700;color:var(--main-green);line-height:1.2}
+.slabel{font-size:calc(24 * var(--r));color:var(--text-sub);margin-top:calc(6 * var(--r))}
+.pentry{display:flex;align-items:center;justify-content:space-between;gap:calc(16 * var(--r));width:100%;text-align:left}
+.pentry .l{display:flex;align-items:center;gap:calc(20 * var(--r));min-width:0}
+.pico{flex:none;width:calc(80 * var(--r));height:calc(80 * var(--r));border-radius:calc(16 * var(--r));
+  background:linear-gradient(135deg,#FFD54F,#FFB300);display:flex;align-items:center;justify-content:center;font-size:calc(38 * var(--r))}
+.ptitle{font-size:calc(28 * var(--r));font-weight:700;margin-bottom:calc(4 * var(--r))}
+.pdesc{font-size:calc(22 * var(--r));color:var(--text-sub)}
+.chev{color:#BBB;font-size:calc(30 * var(--r));line-height:1}
+.wall{display:flex;flex-wrap:wrap;gap:calc(20 * var(--r))}
+.witem{width:calc(25% - calc(15 * var(--r)));text-align:center;padding:calc(24 * var(--r)) 0;
+  border:calc(2 * var(--r)) dashed #E0E0E0;border-radius:calc(16 * var(--r));background:#FAFAFA;opacity:.45;transition:.3s}
+.witem.on{border-color:var(--gold);opacity:1;background:linear-gradient(135deg,#FFFDE7,#FFF8E1);
+  box-shadow:0 calc(4 * var(--r)) calc(12 * var(--r)) rgba(255,179,0,.18)}
+.wico{font-size:calc(42 * var(--r));line-height:1.2;margin-bottom:calc(6 * var(--r))}
+.wname{font-size:calc(22 * var(--r));font-weight:500}
+.bgrid{display:flex;flex-wrap:wrap}
+.bitem{width:25%;text-align:center;padding-bottom:calc(22 * var(--r));opacity:.32;filter:grayscale(1);transition:.3s}
+.bitem.on{opacity:1;filter:none}
+.bico{font-size:calc(48 * var(--r));line-height:1.2;margin-bottom:calc(6 * var(--r))}
+.bname{font-size:calc(22 * var(--r))}
+.menu{display:flex;align-items:center;justify-content:space-between;padding:calc(24 * var(--r)) 0;font-size:calc(28 * var(--r))}
+.tips{font-size:calc(22 * var(--r));color:var(--text-sub);text-align:center;margin-top:calc(20 * var(--r));line-height:1.6}
+
+/* ---- TabBar ---- */
+.tabs{flex:none;display:flex;background:#fff;border-top:calc(1 * var(--r)) solid #EDEDED;
+  padding:calc(12 * var(--r)) 0 calc(14 * var(--r));z-index:30;box-shadow:0 calc(-4 * var(--r)) calc(18 * var(--r)) rgba(0,0,0,.04)}
+.tab{flex:1;display:flex;flex-direction:column;align-items:center;gap:calc(4 * var(--r));color:#6B6B6B;
+  font-size:calc(22 * var(--r));padding:calc(4 * var(--r)) 0;transition:color .2s}
+.tab svg{width:calc(44 * var(--r));height:calc(44 * var(--r))}
+.tab.on{color:var(--green);font-weight:600}
+.tab:active{opacity:.7}
+
+/* ---- 弹窗 / 提示 ---- */
+.mask{position:absolute;inset:0;background:rgba(0,0,0,.45);display:flex;align-items:center;justify-content:center;
+  z-index:70;padding:calc(40 * var(--r));opacity:0;pointer-events:none;transition:opacity .22s}
+.mask.on{opacity:1;pointer-events:auto}
+.sheet{width:100%;background:#fff;border-radius:calc(20 * var(--r));padding:calc(44 * var(--r)) calc(32 * var(--r));
+  transform:translateY(calc(12 * var(--r)));transition:transform .26s cubic-bezier(.2,.9,.3,1);max-height:calc(700 * var(--r));overflow-y:auto}
+.mask.on .sheet{transform:none}
+.ipm{text-align:center}
+.ipavbig{width:calc(160 * var(--r));height:calc(160 * var(--r));border-radius:50%;display:flex;align-items:center;justify-content:center;
+  font-size:calc(78 * var(--r));margin:0 auto calc(20 * var(--r));
+  box-shadow:0 calc(8 * var(--r)) calc(24 * var(--r)) rgba(0,0,0,.15)}
+.ipmn{font-size:calc(36 * var(--r));font-weight:700;color:var(--main-green);margin-bottom:calc(8 * var(--r))}
+.ipmr{font-size:calc(26 * var(--r));color:#C98A00;font-weight:500;margin-bottom:calc(18 * var(--r))}
+.ipmd{font-size:calc(26 * var(--r));color:var(--text-sub);line-height:1.7;margin-bottom:calc(30 * var(--r));text-align:left}
+.btnp{display:block;width:100%;padding:calc(22 * var(--r)) 0;border-radius:calc(50 * var(--r));
+  background:linear-gradient(135deg,#2E7D32,#66BB6A);color:#fff;font-size:calc(30 * var(--r));font-weight:600;
+  box-shadow:0 calc(6 * var(--r)) calc(20 * var(--r)) rgba(46,125,50,.3)}
+.btnp:active{transform:scale(.985)}
+.formt{font-size:calc(32 * var(--r));font-weight:700;color:var(--main-green);text-align:center;margin-bottom:calc(26 * var(--r))}
+.finput,.farea{width:100%;border:calc(1 * var(--r)) solid #E4E4E4;border-radius:calc(12 * var(--r));
+  padding:calc(18 * var(--r)) calc(22 * var(--r));font-size:calc(26 * var(--r));background:#FAFAFA;margin-bottom:calc(18 * var(--r));
+  font-family:inherit;color:var(--text-main);outline:none}
+.finput:focus,.farea:focus{border-color:#9CCC9F;background:#fff}
+.farea{height:calc(200 * var(--r));resize:none;line-height:1.6}
+.fup{width:100%;height:calc(190 * var(--r));border:calc(2 * var(--r)) dashed #C7C7C7;border-radius:calc(12 * var(--r));
+  display:flex;align-items:center;justify-content:center;overflow:hidden;background:#FAFAFA;margin-bottom:calc(18 * var(--r));
+  font-size:calc(26 * var(--r));color:#9E9E9E;position:relative}
+.fup img{width:100%;height:100%;object-fit:cover}
+.fbtns{display:flex;gap:calc(18 * var(--r))}
+.fcancel{flex:1;display:flex;align-items:center;justify-content:center;padding:calc(22 * var(--r)) 0;
+  background:#F5F5F5;color:#757575;border-radius:calc(50 * var(--r));font-size:calc(28 * var(--r))}
+.btnp.half{flex:1;width:auto}
+.toast{position:absolute;left:50%;bottom:calc(180 * var(--r));transform:translate(-50%,calc(10 * var(--r)));
+  background:rgba(28,42,30,.92);color:#fff;font-size:calc(24 * var(--r));padding:calc(14 * var(--r)) calc(28 * var(--r));
+  border-radius:calc(30 * var(--r));opacity:0;pointer-events:none;transition:.25s;z-index:90;white-space:nowrap}
+.toast.on{opacity:1;transform:translate(-50%,0)}
+
+/* 海报 */
+.poster{width:100%;border-radius:calc(16 * var(--r));overflow:hidden;margin-bottom:calc(24 * var(--r));
+  box-shadow:0 calc(8 * var(--r)) calc(24 * var(--r)) rgba(0,0,0,.12)}
+.poster canvas{display:block;width:100%;height:auto}
+
+@keyframes sfloat{0%,100%{transform:translateY(0)}50%{transform:translateY(calc(-8 * var(--r)))}}
+@keyframes sfadeup{from{opacity:0;transform:translateY(calc(20 * var(--r)))}to{opacity:1;transform:none}}
+@keyframes sstamp{0%{transform:scale(2.4) rotate(-24deg);opacity:0}60%{transform:scale(.94) rotate(4deg);opacity:1}100%{transform:scale(1) rotate(0);opacity:1}}
+
+/* 视图切换与补齐 */
+.view{display:none}
+.view.is-on{display:block;animation:sfadeup .32s ease both}
+.ainfo,.ckmain{display:flex;flex-direction:column;min-width:0}
+.aname,.adesc,.ckname,.ckdesc,.ckip{display:block}
+.cklist .scard{margin-bottom:calc(18 * var(--r));padding:calc(26 * var(--r)) calc(22 * var(--r))}
+.ckrow{border-bottom:none;padding:0}
+.pentry span{display:block}
+.pentry .ptitle{display:block}
+.pentry .pdesc{display:block}
+.pentry .l{display:flex}
+.menu{width:100%;text-align:left}
+.tab span{display:block}
+.fitem span{display:block}
+.fup img{position:absolute;left:0;top:0;width:100%;height:100%;object-fit:cover}
+.fup input[hidden]{display:none}
+.finput,.farea{font-size:max(calc(26 * var(--r)),16px)}
+.btnghost{display:flex;align-items:center;justify-content:center;margin-bottom:calc(14 * var(--r));
+  padding:calc(20 * var(--r)) 0;border-radius:calc(50 * var(--r));border:calc(2 * var(--r)) solid #D7E4C8;
+  color:#2E7D32;font-size:calc(26 * var(--r));font-weight:600;text-decoration:none}
+.btnghost[hidden]{display:none}
+.ckrow.new .stampview{animation:sstamp .55s cubic-bezier(.2,1.4,.5,1) both}
+
+@media (prefers-reduced-motion:reduce){
+  .fico,.empty .ei{animation:none}
+  .sslide,.pfill,.mask,.sheet,.toast{transition-duration:.01ms}
+}
+/*DEMO_CSS*/
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="mast">
+    <div class="mast-id"><b>王皓莹</b>产品策划 · 交互设计 · Demo 实现</div>
+    <div class="mast-no">作品复刻 <em>01</em> / 02</div>
+  </header>
+
+  <div class="grid">
+    <main class="brief">
+      <h2>森灵小队</h2>
+      <p class="tagline">把一次普通的公园游园，变成有目标、有记录、能分享的森林探险。</p>
+
+      <dl class="facts">
+        <dt>类型</dt><dd>微信小程序 Demo · H5 复刻版</dd>
+        <dt>时间</dt><dd>2025.02 – 2025.04</dd>
+        <dt>角色</dt><dd>产品策划 · 交互 · 视觉规范 · Logic 实现</dd>
+        <dt>状态</dt><dd class="state">在线可点，数据存在本地</dd>
+      </dl>
+
+      <section class="blk">
+        <h3>我做了什么</h3>
+        <ul class="did">
+          <li>把「孩子在公园里没有探索目标」这一模糊问题，拆成 7 个真实分区、6 个 IP 角色、3 个功能模块的清单。</li>
+          <li>定义「打卡 → 集章 → 升级 → 晒海报」的激励链路：7 枚印章对应 4 级成长，8 枚徽章覆盖多维度行为。</li>
+          <li>用 AI 生成 IP 概念图并落到界面角色上，统一「光合青 + 叶脉金」的视觉体系。</li>
+          <li>借 Cursor 完成可运行 Demo，玩法与交互逻辑由自己把控。</li>
+        </ul>
+      </section>
+
+      <section class="blk">
+        <h3>体验闭环</h3>
+        <ul class="loop">
+          <li>
+            <span class="when">游园前</span>
+            <span class="dot"><i></i></span>
+            <span class="what"><b>先认识森林</b>首页看 7 大分区与 6 位森灵，知道今天要去哪、能盖什么章。</span>
+          </li>
+          <li>
+            <span class="when">游园中</span>
+            <span class="dot"><i></i></span>
+            <span class="what"><b>到点打卡</b>在对应分区盖下专属印章，写下一条自然观察日记。</span>
+          </li>
+          <li>
+            <span class="when">游园后</span>
+            <span class="dot"><i></i></span>
+            <span class="what"><b>沉淀成成就</b>等级、印章墙、徽章自动结算，一键生成成就海报分享给家长群。</span>
+          </li>
+        </ul>
+      </section>
+
+      <section class="blk">
+        <h3>小程序 → H5 的等价替换</h3>
+        <ul class="tech">
+          <li><code>WXML</code> → <code>div / span / img</code>，列表用数据驱动渲染</li>
+          <li><code>rpx</code> → <code>cqw</code> 容器单位，750rpx 恒等于屏宽，手机壳内与全屏等比一致</li>
+          <li><code>wx.setStorageSync</code> → <code>localStorage</code>，刷新不丢数据</li>
+          <li><code>wx.chooseMedia</code> → <code>input[type=file]</code>，选图后压缩再入库</li>
+          <li><code>wx.canvasToTempFilePath</code> → <code>canvas.toDataURL</code> + 浏览器下载</li>
+          <li><code>wx.openLocation</code> → 唤起高德地图搜索对应园区</li>
+        </ul>
+        <p class="note">仓库里 <code>pages/checkin</code> 目录未提交，打卡集章页按 4 张真机截图与 <code>mine.js</code> 的结算逻辑还原；副本里首次打开预置了示例数据，方便直接看到完成态。</p>
+      </section>
+    </main>
+
+    <div class="stage">
+      <div class="device">
+        <div class="frame">
+          <div class="screen">
+            <div class="notch"></div>
+            <header class="appbar"><span class="ttl" id="appTitle">森灵小队</span></header>
+
+            <div class="body" id="body">
+
+              <!-- ===== 视图：首页 ===== -->
+              <section class="view is-on" data-view="home">
+                <div class="s-pad">
+                  <div class="sbanner" id="banner">
+                    <div class="sslide s1 on">
+                      <div class="h">径络探秘 · 绿叶仙踪</div>
+                      <div class="s">与森灵小队一起开启森林探险</div>
+                    </div>
+                    <div class="sslide s2">
+                      <div class="h">集齐 7 枚森林印章</div>
+                      <div class="s">解锁官方认证小小探险家称号</div>
+                    </div>
+                    <div class="sdots"><i class="on"></i><i></i></div>
+                  </div>
+
+                  <div class="scard sfunc">
+                    <div class="fgrid">
+                      <button class="fitem" data-go="checkin">
+                        <span class="fico i1">🗺️</span>
+                        <span class="fname">分区打卡</span>
+                        <span class="fdesc">解锁森林印章</span>
+                      </button>
+                      <button class="fitem" data-go="diary">
+                        <span class="fico i2">📒</span>
+                        <span class="fname">森灵日记</span>
+                        <span class="fdesc">记录自然观察</span>
+                      </button>
+                      <button class="fitem" data-go="mine">
+                        <span class="fico i3">🏆</span>
+                        <span class="fname">我的成就</span>
+                        <span class="fdesc">查看探险等级</span>
+                      </button>
+                    </div>
+                  </div>
+
+                  <div class="scard">
+                    <div class="st">森灵小队</div>
+                    <div class="iplist" id="ipGrid"></div>
+                  </div>
+
+                  <div class="scard">
+                    <div class="st">七大探险分区</div>
+                    <div id="areaList"></div>
+                  </div>
+                </div>
+              </section>
+
+              <!-- ===== 视图：打卡集章 ===== -->
+              <section class="view" data-view="checkin">
+                <div class="s-pad">
+                  <div class="prog">
+                    <div class="pt">森林印章收集</div>
+                    <div class="ps">已收集 <span id="progNum">0</span> / 7 枚</div>
+                    <div class="pbar"><div class="pfill" id="pfill" style="width:0%"></div></div>
+                  </div>
+                  <div class="cklist" id="ckList"></div>
+                </div>
+              </section>
+
+              <!-- ===== 视图：森灵日记 ===== -->
+              <section class="view" data-view="diary">
+                <div class="s-pad">
+                  <button class="btnadd" id="btnAdd">✨ 记录新的自然观察</button>
+                  <div id="dList"></div>
+                  <div class="scard empty" id="dEmpty">
+                    <div class="ei">🌿</div>
+                    <div class="et">还没有观察记录哦</div>
+                    <div class="es">快去发现森林里的小秘密，记录下来吧</div>
+                  </div>
+                </div>
+              </section>
+
+              <!-- ===== 视图：我的 ===== -->
+              <section class="view" data-view="mine">
+                <div class="s-pad">
+                  <div class="ucard">
+                    <div class="uav">🌿</div>
+                    <div class="uinfo">
+                      <div class="uname">小小探险家</div>
+                      <div class="udesc">森灵小队 · <span id="uLevel">Lv.1 预备队员</span></div>
+                      <div class="ubar"><div class="ufill" id="ufill" style="width:0%"></div></div>
+                    </div>
+                  </div>
+
+                  <div class="scard stats">
+                    <div class="sitem"><div class="snum" id="sCheck">0</div><div class="slabel">已打卡分区</div></div>
+                    <div class="sitem"><div class="snum" id="sStamp">0</div><div class="slabel">收集印章</div></div>
+                    <div class="sitem"><div class="snum" id="sDiary">0</div><div class="slabel">观察日记</div></div>
+                  </div>
+
+                  <button class="scard pentry" id="btnPoster">
+                    <span class="l">
+                      <span class="pico">🖼️</span>
+                      <span>
+                        <span class="ptitle">生成探险成就海报</span>
+                        <span class="pdesc">一键保存，分享你的森林探险之旅</span>
+                      </span>
+                    </span>
+                    <span class="chev">›</span>
+                  </button>
+
+                  <div class="scard">
+                    <div class="st">我的印章收藏</div>
+                    <div class="wall" id="wall"></div>
+                  </div>
+
+                  <div class="scard">
+                    <div class="st">成就徽章</div>
+                    <div class="bgrid" id="badges"></div>
+                  </div>
+
+                  <div class="scard">
+                    <button class="menu" id="btnReset"><span>重置所有探险数据</span><span class="chev">›</span></button>
+                  </div>
+                  <div class="tips">数据保存在本机浏览器，清空缓存即回到示例状态</div>
+                </div>
+              </section>
+            </div>
+
+            <nav class="tabs" id="tabs">
+              <button class="tab on" data-go="home">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 10.6 12 4l8 6.6v8.6a.8.8 0 0 1-.8.8H4.8a.8.8 0 0 1-.8-.8z"/><path d="M9.4 20v-5.2h5.2V20"/></svg>
+                <span>首页</span>
+              </button>
+              <button class="tab" data-go="checkin">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="14.2" width="14" height="4.8" rx="1.4"/><path d="M9 14.2v-3.4a3 3 0 0 1 6 0v3.4"/></svg>
+                <span>打卡集章</span>
+              </button>
+              <button class="tab" data-go="diary">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M5 5.6A1.6 1.6 0 0 1 6.6 4H18a1 1 0 0 1 1 1v14a1 1 0 0 1-1 1H6.6A1.6 1.6 0 0 1 5 18.4z"/><path d="M5 18.4A1.6 1.6 0 0 1 6.6 16.8H19"/></svg>
+                <span>森灵日记</span>
+              </button>
+              <button class="tab" data-go="mine">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8.4" r="3.4"/><path d="M5.2 19.4c0-3.2 3-5.2 6.8-5.2s6.8 2 6.8 5.2"/></svg>
+                <span>我的</span>
+              </button>
+            </nav>
+
+            <!-- ===== 弹窗 ===== -->
+            <div class="mask" id="maskIp">
+              <div class="sheet ipm" id="ipSheet">
+                <div class="ipavbig" id="ipA"></div>
+                <div class="ipmn" id="ipN"></div>
+                <div class="ipmr" id="ipR"></div>
+                <div class="ipmd" id="ipD"></div>
+                <a class="btnghost" id="btnNav" href="#" target="_blank" rel="noopener" hidden>在高德地图里找这个园区</a>
+                <button class="btnp" data-close="maskIp">我知道啦</button>
+              </div>
+            </div>
+
+            <div class="mask" id="maskAdd">
+              <div class="sheet">
+                <div class="formt">记录自然观察</div>
+                <input class="finput" id="fTitle" placeholder="给观察起个标题" maxlength="24">
+                <label class="fup" id="fup">
+                  <input type="file" accept="image/*" id="fileImg" hidden>
+                  <span id="fupText">📷 点击添加照片</span>
+                  <img id="fupImg" alt="观察照片" hidden>
+                </label>
+                <textarea class="farea" id="fContent" placeholder="写下你发现的自然小秘密..." maxlength="200"></textarea>
+                <input class="finput" id="fMood" placeholder="今天的心情（开心/惊喜/好奇...）" maxlength="8">
+                <div class="fbtns">
+                  <button class="fcancel" data-close="maskAdd">取消</button>
+                  <button class="btnp half" id="btnSave">保存记录</button>
+                </div>
+              </div>
+            </div>
+
+            <div class="mask" id="maskPoster">
+              <div class="sheet">
+                <div class="poster"><canvas id="poster"></canvas></div>
+                <div class="fbtns">
+                  <button class="fcancel" data-close="maskPoster">关闭</button>
+                  <button class="btnp half" id="btnSavePoster">保存图片</button>
+                </div>
+              </div>
+            </div>
+
+            <div class="mask" id="maskReset">
+              <div class="sheet ipm">
+                <div class="ipmn">重置探险数据？</div>
+                <div class="ipmd" style="text-align:center">打卡记录、印章和日记都会被清空，回到示例状态。这个动作不能撤销。</div>
+                <div class="fbtns">
+                  <button class="fcancel" data-close="maskReset">再想想</button>
+                  <button class="btnp half" id="btnConfirmReset">确定重置</button>
+                </div>
+              </div>
+            </div>
+
+            <div class="toast" id="toast"></div>
+          </div>
+        </div>
+      </div>
+      <p class="caption">手机打开本页即全屏体验；点 <b>立即打卡</b> 盖章、写日记、生成海报都能真操作。</p>
+    </div>
+  </div>
+</div>
+<script>
+(function(){
+  "use strict";
+  var $ = function(id){ return document.getElementById(id); };
+  var esc = function(s){ return String(s).replace(/[&<>"']/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]; }); };
+  function once(el, evt, fn){ if(!el){ return; } var k = '_b_' + evt; if(el[k]) return; el[k] = 1; el.addEventListener(evt, fn); }
+  var KEY = 'silin-demo-v1';
+
+  /* ---------- 静态内容（沿用小程序 app.js / mine.js 的数据） ---------- */
+  var IPS = [
+    {n:'光合兔', r:'森林信使', ic:'🐰', c1:'#8BC34A', c2:'#DCEDC8', d:'兔耳灵感来自发光叶脉导管，尾巴是蒲公英绒球，光合作用时会触发黄到绿的渐变呼吸灯效。'},
+    {n:'树灵狐', r:'森林智者', ic:'🦊', c1:'#FF9800', c2:'#FFE0B2', d:'驻守入口广场与休息区，为小探险家们指引方向，解答森林里的各种小疑问。'},
+    {n:'苔藓蛙', r:'水源守护者', ic:'🐸', c1:'#4CAF50', c2:'#C8E6C9', d:'守护观赏露营区的水源与湿地，带着小朋友们观察水生植物与小昆虫。'},
+    {n:'萤火蜂', r:'夜间导航员', ic:'🐝', c1:'#FFEB3B', c2:'#FFF9C4', d:'夜晚会发出暖黄色微光，是健身区与涂鸦廊的活力担当，陪大家运动玩耍。'},
+    {n:'落叶雀', r:'四季信使', ic:'🐦', c1:'#795548', c2:'#D7CCC8', d:'带着四季的讯息穿梭在涂鸦展廊，记录小朋友们的创意画作与自然观察。'},
+    {n:'根系熊', r:'大地守护者', ic:'🐻', c1:'#5D4037', c2:'#BCAAA4', d:'力量担当，驻守全龄探索区，守护攀爬设施，见证每个小朋友的勇气成长。'}
+  ];
+
+  /* 7 大分区：名称/简介沿用 app.js，印章与守护森灵沿用 mine.js 与打卡页截图 */
+  var AREAS = [
+    {n:'入口广场', ic:'🚪', d:'嬉水喷泉 · 广场雕塑，开启森林探险', stamp:'入口章', ip:'树灵狐 Arden',
+     intro:'进园第一站。喷泉与广场雕塑构成开场场景，树灵狐在这里给每位小探险家发出第一张「森林护照」，领到护照才算正式出发。'},
+    {n:'全龄儿童探索区', ic:'🧗', d:'下沉式探险空间 · 攀爬滑梯勇气挑战', stamp:'勇气章', ip:'根系熊 Buster',
+     intro:'下沉式地形把游戏藏进林间，攀爬网、滑梯与坡道串成一条需要自己判断路线的挑战线。完成一处攀爬，根系熊盖章认可你的勇气。'},
+    {n:'涂鸦展廊', ic:'🎨', d:'创意涂鸦墙 · 自然科普小展区', stamp:'创意章', ip:'落叶雀 Avery',
+     intro:'巨幅涂鸦墙留给孩子自由落笔，一旁的科普展区用插画讲森林里的四季。落叶雀会把你的画作收进它的四季档案。'},
+    {n:'智能健身娱乐区', ic:'🏃', d:'智能健身步道 · 太阳能健身设施', stamp:'活力章', ip:'萤火蜂 Lulu',
+     intro:'沿步道布置的太阳能健身器材会记录运动数据，把锻炼变成可看见的进度。萤火蜂在夜里点亮这条路，也点亮你的活力章。'},
+    {n:'观赏露营区', ic:'⛺', d:'自然景观 · 露营休憩空间', stamp:'自然章', ip:'苔藓蛙 Momo',
+     intro:'临水的开阔草地与露营点，是观察水生植物和昆虫的最好位置。苔藓蛙守在这里，提醒你蹲下来看清水里的小世界。'},
+    {n:'幼龄儿童娱乐区', ic:'🏡', d:'沙坑游戏 · 半坡童话小屋', stamp:'童趣章', ip:'光合兔 Phoebe',
+     intro:'沙坑与半埋进坡地的童话小屋，尺度专为低龄段设计。光合兔负责这一片，它的呼吸灯会随孩子的笑声变色。'},
+    {n:'休息区', ic:'🍵', d:'临水茶室廊架 · 家长休憩空间', stamp:'圆满章', ip:'树灵狐 Arden',
+     intro:'临水廊架下的茶室是家长的落脚点，也是收尾的地方。集齐前六枚印章后回到这里，树灵狐为你盖上圆满章。'}
+  ];
+
+  /* ---------- 状态 ---------- */
+  var SEED = {
+    checked: ['入口广场', '幼龄儿童娱乐区'],
+    diary: [
+      { id: 1, title: '喷泉边的第一只鸟', mood: '惊喜', date: '2025-04-06',
+        content: '一进园就听见喷泉声。水花溅到石阶上，有只小雀在边上洗澡，翅膀抖得特别快。树灵狐的牌子就在旁边，先领了护照。' },
+      { id: 2, title: '沙坑里的“考古现场”', mood: '好奇', date: '2025-04-13',
+        content: '幼龄区的沙坑被挖出好几个坑，孩子们说在找化石。半坡的童话小屋门口排队排到第三棵树下，光合兔的耳朵会一亮一暗。' }
+    ]
+  };
+
+  var state = load();
+
+  function load(){
+    try{
+      var raw = localStorage.getItem(KEY);
+      if(raw){
+        var o = JSON.parse(raw);
+        if(o && Array.isArray(o.checked) && Array.isArray(o.diary)) return o;
+      }
+    }catch(e){}
+    return JSON.parse(JSON.stringify(SEED));
+  }
+  function save(){
+    try{ localStorage.setItem(KEY, JSON.stringify(state)); }
+    catch(e){ toast('图片太大，只保存了文字'); state.diary.forEach(function(d){ d.img=''; }); try{ localStorage.setItem(KEY, JSON.stringify(state)); }catch(e2){} }
+  }
+
+  /* ---------- 通用 ---------- */
+  var toastTimer;
+  function toast(msg){
+    var t = $('toast'); t.textContent = msg; t.classList.add('on');
+    clearTimeout(toastTimer); toastTimer = setTimeout(function(){ t.classList.remove('on'); }, 1900);
+  }
+  function openMask(id){ $(id).classList.add('on'); }
+  function closeMask(id){ $(id).classList.remove('on'); }
+
+  var TITLES = { home:'森灵小队', checkin:'打卡集章', diary:'森灵日记', mine:'我的' };
+  var cur = 'home';
+  function go(view){
+    if(!TITLES[view]) return;
+    cur = view;
+    Array.prototype.forEach.call(document.querySelectorAll('.view'), function(v){ v.classList.toggle('is-on', v.dataset.view === view); });
+    Array.prototype.forEach.call(document.querySelectorAll('.tab'), function(t){ t.classList.toggle('on', t.dataset.go === view); });
+    $('appTitle').textContent = TITLES[view];
+    $('body').scrollTop = 0;
+    if(location.hash !== '#' + view){ try{ history.replaceState(null, '', '#' + view); }catch(e){} }
+    if(view === 'mine') renderMine();
+    if(view === 'diary') renderDiary();
+    if(view === 'checkin') renderCheckin();
+  }
+
+  document.addEventListener('click', function(e){
+    var goEl = e.target.closest('[data-go]');
+    if(goEl){ go(goEl.dataset.go); return; }
+    var closeEl = e.target.closest('[data-close]');
+    if(closeEl){ closeMask(closeEl.dataset.close); return; }
+    if(e.target.classList.contains('mask')){ e.target.classList.remove('on'); }
+  });
+
+  /* ---------- 首页渲染 ---------- */
+  function renderHome(){
+    $('ipGrid').innerHTML = IPS.map(function(p, i){
+      return '<button class="ipitem" data-ip="' + i + '">' +
+        '<span class="ipav" style="background:linear-gradient(135deg,' + p.c1 + ',' + p.c2 + ')">' + p.ic + '</span>' +
+        '<span class="ipname">' + p.n + '</span>' +
+        '<span class="iprole">' + p.r + '</span></button>';
+    }).join('');
+
+    $('areaList').innerHTML = AREAS.map(function(a){
+      return '<div class="arow"><span class="aico">' + a.ic + '</span>' +
+        '<span class="ainfo"><span class="aname">' + a.n + '</span>' +
+        '<span class="adesc">' + esc(a.d) + '</span></span></div>';
+    }).join('');
+
+    once($('ipGrid'), 'click', function(e){
+      var b = e.target.closest('[data-ip]'); if(!b) return;
+      var p = IPS[+b.dataset.ip];
+      $('ipA').textContent = p.ic;
+      $('ipA').style.background = 'linear-gradient(135deg,' + p.c1 + ',' + p.c2 + ')';
+      $('ipN').textContent = p.n;
+      $('ipR').textContent = p.r;
+      $('ipD').textContent = p.d;
+      $('btnNav').hidden = true;
+      openMask('maskIp');
+    });
+  }
+
+  /* 轮播 */
+  var slideIdx = 0, slideTimer;
+  function bindBanner(){
+    var slides = document.querySelectorAll('.sslide');
+    var dots = document.querySelectorAll('.sdots i');
+    function show(i){
+      slideIdx = i;
+      Array.prototype.forEach.call(slides, function(s, k){ s.classList.toggle('on', k === i); });
+      Array.prototype.forEach.call(dots, function(d, k){ d.classList.toggle('on', k === i); });
+    }
+    function start(){ clearInterval(slideTimer); slideTimer = setInterval(function(){ show((slideIdx + 1) % slides.length); }, 3600); }
+    Array.prototype.forEach.call(dots, function(d, k){
+      d.addEventListener('click', function(e){ e.stopPropagation(); show(k); start(); });
+    });
+    start();
+  }
+
+  /* ---------- 打卡 ---------- */
+  function renderCheckin(){
+    var n = state.checked.length;
+    $('progNum').textContent = n;
+    $('pfill').style.width = Math.round(n / 7 * 100) + '%';
+
+    $('ckList').innerHTML = AREAS.map(function(a){
+      var done = state.checked.indexOf(a.n) > -1;
+      var right = done
+        ? '<span class="stampview">' + a.stamp + '</span>'
+        : '<button class="btnck" data-stamp="' + esc(a.n) + '">立即打卡</button>';
+      return '<div class="scard ckrow">' +
+          '<span class="aico">' + a.ic + '</span>' +
+          '<span class="ckmain"><span class="ckname">' + a.n + '</span>' +
+          '<span class="ckdesc">' + esc(a.d) + '</span>' +
+          '<span class="ckip">对应森灵：<b>' + a.ip + '</b></span></span>' +
+          '<span class="ckact">' + right +
+            '<button class="linkbtn" data-detail="' + esc(a.n) + '">查看详情</button></span>' +
+        '</div>';
+    }).join('');
+
+    once($('ckList'), 'click', function(e){
+      var s = e.target.closest('[data-stamp]');
+      if(s){
+        var name = s.dataset.stamp;
+        var area = AREAS.find(function(a){ return a.n === name; });
+        if(state.checked.indexOf(name) === -1){
+          state.checked.push(name); save();
+        }
+        renderCheckin(); renderMineStats();
+        toast('已盖上「' + area.stamp + '」，集齐 7 枚解锁探险家');
+        return;
+      }
+      var d = e.target.closest('[data-detail]');
+      if(d){
+        var a = AREAS.find(function(x){ return x.n === d.dataset.detail; });
+        var unlocked = state.checked.indexOf(a.n) > -1;
+        $('ipA').textContent = a.ic;
+        $('ipA').style.background = 'linear-gradient(135deg,#E8F5E9,#C8E6C9)';
+        $('ipN').textContent = a.n;
+        $('ipR').textContent = (unlocked ? '已盖章 · ' : '未打卡 · ') + a.stamp + ' / ' + a.ip;
+        $('ipD').textContent = a.intro;
+        $('btnNav').hidden = false;
+        $('btnNav').href = 'https://uri.amap.com/search?keyword=' + encodeURIComponent('阜新市人民公园 ' + a.n) + '&callnative=1';
+        openMask('maskIp');
+      }
+    });
+  }
+
+  /* ---------- 日记 ---------- */
+  function fmt(d){
+    var m = String(d.getMonth() + 1), dd = String(d.getDate());
+    return d.getFullYear() + '-' + (m.length < 2 ? '0' + m : m) + '-' + (dd.length < 2 ? '0' + dd : dd);
+  }
+  function renderDiary(){
+    var list = state.diary.slice().reverse();
+    $('dEmpty').hidden = list.length > 0;
+    $('dList').innerHTML = list.map(function(it){
+      return '<div class="scard dcard">' +
+        '<div class="dhead"><span class="dtitle">' + esc(it.title) + '</span><span class="ddate">' + esc(it.date) + '</span></div>' +
+        (it.img ? '<img class="dimg" src="' + it.img + '" alt="自然观察照片">' : '') +
+        '<div class="dtext">' + esc(it.content) + '</div>' +
+        '<div class="dfoot"><span class="mood">心情：' + esc(it.mood || '开心') + '</span></div></div>';
+    }).join('');
+  }
+
+  var pendingImg = '';
+  function openAdd(){
+    $('fTitle').value = ''; $('fContent').value = ''; $('fMood').value = '';
+    pendingImg = ''; $('fupImg').hidden = true; $('fupImg').removeAttribute('src'); $('fupText').hidden = false;
+    openMask('maskAdd');
+  }
+  function compress(file, cb){
+    var fr = new FileReader();
+    fr.onload = function(){
+      var im = new Image();
+      im.onload = function(){
+        var max = 720, w = im.naturalWidth, h = im.naturalHeight;
+        if(w > max || h > max){ if(w >= h){ h = h * max / w; w = max; } else { w = w * max / h; h = max; } }
+        var c = document.createElement('canvas'); c.width = w; c.height = h;
+        c.getContext('2d').drawImage(im, 0, 0, w, h);
+        cb(c.toDataURL('image/jpeg', 0.72));
+      };
+      im.onerror = function(){ cb(''); };
+      im.src = fr.result;
+    };
+    fr.onerror = function(){ cb(''); };
+    fr.readAsDataURL(file);
+  }
+  $('fileImg').addEventListener('change', function(e){
+    var f = e.target.files && e.target.files[0]; if(!f) return;
+    compress(f, function(url){
+      if(!url){ toast('这张图读不出来，换一张试试'); return; }
+      pendingImg = url;
+      $('fupImg').src = url; $('fupImg').hidden = false; $('fupText').hidden = true;
+    });
+    e.target.value = '';
+  });
+
+  $('btnAdd').addEventListener('click', openAdd);
+  $('btnSave').addEventListener('click', function(){
+    var t = $('fTitle').value.trim(), c = $('fContent').value.trim(), m = $('fMood').value.trim();
+    if(!t){ toast('请输入标题'); return; }
+    if(!c){ toast('请输入观察内容'); return; }
+    state.diary.push({ id: Date.now(), title: t, content: c, mood: m || '开心', img: pendingImg || '', date: fmt(new Date()) });
+    save();
+    closeMask('maskAdd');
+    renderDiary(); renderMineStats();
+    toast('记录成功');
+  });
+
+  /* ---------- 我的 ---------- */
+  function levelOf(n){
+    if(n >= 7) return { lv: 4, name: '森林探险家', p: 100 };
+    if(n >= 5) return { lv: 3, name: '正式队员', p: (n - 5) / 2 * 100 };
+    if(n >= 3) return { lv: 2, name: '见习队员', p: (n - 3) / 2 * 100 };
+    return { lv: 1, name: '预备队员', p: n / 3 * 100 };
+  }
+  function renderMineStats(){
+    var n = state.checked.length, dn = state.diary.length, lv = levelOf(n);
+    $('sCheck').textContent = n;
+    $('sStamp').textContent = n;
+    $('sDiary').textContent = dn;
+    $('uLevel').textContent = 'Lv.' + lv.lv + ' ' + lv.name;
+    $('ufill').style.width = Math.min(lv.p, 100) + '%';
+  }
+  function renderMine(){
+    renderMineStats();
+    var n = state.checked.length, dn = state.diary.length;
+    $('wall').innerHTML = AREAS.map(function(a, i){
+      var on = i < n;
+      return '<div class="witem ' + (on ? 'on' : '') + '"><div class="wico">' + a.ic + '</div>' +
+        '<div class="wname">' + a.stamp + '</div></div>';
+    }).join('');
+    var B = [
+      ['初入森林','🌱', n >= 1], ['勇气可嘉','💪', n >= 3], ['自然观察家','🔍', dn >= 3], ['全收集大师','🏆', n >= 7],
+      ['日记达人','📝', dn >= 7], ['森灵挚友','💚', n >= 5 && dn >= 3], ['创意无限','🎨', n >= 2], ['活力满满','⚡', n >= 4]
+    ];
+    $('badges').innerHTML = B.map(function(b){
+      return '<div class="bitem ' + (b[2] ? 'on' : '') + '"><div class="bico">' + b[1] + '</div><div class="bname">' + b[0] + '</div></div>';
+    }).join('');
+  }
+
+  $('btnReset').addEventListener('click', function(){ openMask('maskReset'); });
+  $('btnConfirmReset').addEventListener('click', function(){
+    state = JSON.parse(JSON.stringify(SEED)); save();
+    closeMask('maskReset');
+    renderDiary(); renderMine(); renderCheckin(); renderHome();
+    toast('已重置为示例数据');
+  });
+
+  /* ---------- 海报 ---------- */
+  var posterCanvas = $('poster'), lastPoster = '';
+  function drawPoster(){
+    var W = 640, H = 900;
+    posterCanvas.width = W; posterCanvas.height = H;
+    var ctx = posterCanvas.getContext('2d');
+    var n = state.checked.length, dn = state.diary.length, lv = levelOf(n);
+
+    var g = ctx.createLinearGradient(0, 0, W * 0.4, H);
+    g.addColorStop(0, '#12441A'); g.addColorStop(0.55, '#1B5E20'); g.addColorStop(1, '#4CAF50');
+    ctx.fillStyle = g; ctx.fillRect(0, 0, W, H);
+
+    ctx.globalAlpha = 0.10;
+    for(var i = 0; i < 5; i++){
+      ctx.beginPath(); ctx.arc(W - 40 - i * 46, 90 + i * 52, 64 + i * 12, 0, Math.PI * 2);
+      ctx.fillStyle = '#FFFFFF'; ctx.fill();
+    }
+    ctx.globalAlpha = 1;
+
+    ctx.textAlign = 'center';
+    ctx.fillStyle = '#FFFFFF';
+    ctx.font = 'bold 38px "PingFang SC","Microsoft YaHei",sans-serif';
+    ctx.fillText('径络探秘 · 绿叶仙踪', W / 2, 86);
+    ctx.font = '21px "PingFang SC","Microsoft YaHei",sans-serif';
+    ctx.fillStyle = 'rgba(255,255,255,.82)';
+    ctx.fillText('森灵小队 · 探险成就证书', W / 2, 122);
+
+    var cx = 40, cy = 156, cw = W - 80, ch = 480, r = 26;
+    ctx.fillStyle = 'rgba(255,255,255,.96)';
+    ctx.beginPath();
+    ctx.moveTo(cx + r, cy);
+    ctx.arcTo(cx + cw, cy, cx + cw, cy + ch, r);
+    ctx.arcTo(cx + cw, cy + ch, cx, cy + ch, r);
+    ctx.arcTo(cx, cy + ch, cx, cy, r);
+    ctx.arcTo(cx, cy, cx + cw, cy, r);
+    ctx.closePath(); ctx.fill();
+
+    ctx.fillStyle = '#1B5E20';
+    ctx.font = 'bold 31px "PingFang SC","Microsoft YaHei",sans-serif';
+    ctx.fillText('小小探险家', W / 2, cy + 62);
+
+    var stats = [['打卡分区', n], ['收集印章', n], ['观察日记', dn]];
+    var iw = cw / 3;
+    stats.forEach(function(s, k){
+      var x = cx + iw * k + iw / 2;
+      ctx.fillStyle = '#E39A00';
+      ctx.font = 'bold 42px "PingFang SC","Microsoft YaHei",sans-serif';
+      ctx.fillText(String(s[1]), x, cy + 136);
+      ctx.fillStyle = '#7A7A7A';
+      ctx.font = '18px "PingFang SC","Microsoft YaHei",sans-serif';
+      ctx.fillText(s[0], x, cy + 168);
+    });
+
+    ctx.strokeStyle = '#EDEDED'; ctx.lineWidth = 1;
+    ctx.beginPath(); ctx.moveTo(cx + 34, cy + 198); ctx.lineTo(cx + cw - 34, cy + 198); ctx.stroke();
+
+    ctx.fillStyle = '#1B5E20';
+    ctx.font = 'bold 24px "PingFang SC","Microsoft YaHei",sans-serif';
+    ctx.fillText('探险等级  Lv.' + lv.lv + '  ' + lv.name, W / 2, cy + 244);
+    ctx.fillStyle = '#9A9A9A';
+    ctx.font = '17px "PingFang SC","Microsoft YaHei",sans-serif';
+    ctx.fillText('已解锁印章  ' + n + ' / 7', W / 2, cy + 282);
+
+    var st = AREAS.slice(0, n).map(function(a){ return a.stamp.replace('章', ''); });
+    ctx.fillStyle = '#B98200';
+    ctx.font = 'bold 20px "PingFang SC","Microsoft YaHei",sans-serif';
+    ctx.fillText(st.length ? st.join('  ·  ') : '还没有盖章，去森林里走走吧', W / 2, cy + 330);
+
+    ctx.fillStyle = '#EFEFEF';
+    ctx.beginPath(); ctx.moveTo(cx + 34, cy + 366); ctx.lineTo(cx + cw - 34, cy + 366); ctx.stroke();
+    ctx.fillStyle = '#8A8A8A';
+    ctx.font = '16px "PingFang SC","Microsoft YaHei",sans-serif';
+    ctx.fillText('与森灵小队一起，探索自然奥秘', W / 2, cy + 404);
+    ctx.fillStyle = '#B5B5B5';
+    ctx.font = '14px "PingFang SC","Microsoft YaHei",sans-serif';
+    ctx.fillText('互动 Demo · 数据保存在本机浏览器', W / 2, cy + 434);
+
+    ctx.fillStyle = 'rgba(255,255,255,.9)';
+    ctx.font = '20px "PingFang SC","Microsoft YaHei",sans-serif';
+    ctx.fillText('线下游园 · 线上打卡 · IP 沉淀', W / 2, H - 58);
+    ctx.fillStyle = 'rgba(255,255,255,.55)';
+    ctx.font = '15px "PingFang SC","Microsoft YaHei",sans-serif';
+    ctx.fillText('森林印章收集计划', W / 2, H - 30);
+
+    lastPoster = posterCanvas.toDataURL('image/png');
+  }
+  $('btnPoster').addEventListener('click', function(){ drawPoster(); openMask('maskPoster'); });
+  $('btnSavePoster').addEventListener('click', function(){
+    if(!lastPoster){ drawPoster(); }
+    var a = document.createElement('a');
+    a.href = lastPoster; a.download = '森灵小队-探险成就.png';
+    document.body.appendChild(a); a.click(); a.remove();
+    toast('已保存，可在下载目录查看');
+  });
+
+  /* ---------- 启动 ---------- */
+  renderHome(); renderCheckin(); renderDiary(); renderMine(); bindBanner();
+  var start = (location.hash || '').replace('#', '');
+  if(TITLES[start]){ go(start); } else { $('appTitle').textContent = '森灵小队'; }
+  window.addEventListener('hashchange', function(){
+    var v = (location.hash || '').replace('#', '');
+    if(TITLES[v] && v !== cur) go(v);
+  });
+})();
+</script>
+</body>
+</html>

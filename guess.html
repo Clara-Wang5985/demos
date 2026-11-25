@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>疯狂猜词 · 60 秒派对猜词 H5</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23FF6B3D'/%3E%3Cpath d='M9 15.5c0-4 3-6.8 7-6.8s7 2.8 7 6.8-3 6.8-7 6.8c-.9 0-1.8-.1-2.6-.4L9.5 23.6l1-3.1C9.4 19.2 9 17.5 9 15.5z' fill='%23fff'/%3E%3C/svg%3E">
+<style>
+/* ============ 外层：作品集版面 ============ */
+*,*::before,*::after{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{
+  margin:0;background:#F6EFE5;color:#2A2118;
+  font-family:"PingFang SC","Microsoft YaHei","Noto Sans SC",-apple-system,"Segoe UI",sans-serif;
+  font-size:16px;line-height:1.7;-webkit-font-smoothing:antialiased;
+}
+img,svg{display:block}
+button{font:inherit;color:inherit;border:0;background:none;cursor:pointer}
+.wrap{max-width:1272px;margin:0 auto;padding:clamp(26px,4vw,68px) clamp(20px,4vw,56px) 76px}
+
+.mast{display:flex;align-items:flex-end;justify-content:space-between;gap:20px;
+  border-bottom:1px solid #E2D4C3;padding-bottom:14px}
+.mast-id{font-size:13.5px;line-height:1.5;color:#8A7564;letter-spacing:.01em}
+.mast-id b{display:block;font-size:15px;font-weight:600;color:#2A2118;letter-spacing:.02em}
+.mast-no{font-size:13.5px;color:#94795F;white-space:nowrap}
+.mast-no em{font-style:normal;font-weight:600;color:#E24E22}
+
+.grid{display:grid;grid-template-columns:minmax(320px,430px) 375px;gap:clamp(36px,6vw,104px);
+  justify-content:center;margin-top:clamp(32px,5vw,64px)}
+
+.brief{max-width:430px}
+.brief h2{margin:0;font-size:clamp(34px,3.3vw,46px);line-height:1.12;letter-spacing:-.015em;
+  font-weight:700;color:#241C14}
+.brief .tagline{margin:16px 0 0;font-size:18px;line-height:1.7;color:#4A3A2C;max-width:34ch}
+.facts{display:grid;grid-template-columns:76px 1fr;gap:6px 14px;margin:26px 0 0;font-size:14px}
+.facts dt{color:#94795F}
+.facts dd{margin:0;color:#33281D}
+.facts dd.state{color:#E24E22;font-weight:600}
+
+.blk{margin-top:36px;padding-top:24px;border-top:1px solid #E6D8C7}
+.blk h3{margin:0 0 14px;font-size:13px;font-weight:600;color:#94795F;letter-spacing:.02em}
+.blk p{margin:0;font-size:15px;line-height:1.8;color:#3A2C22}
+.did{margin:0;padding:0;list-style:none}
+.did li{position:relative;padding-left:22px;margin-bottom:10px;font-size:15px;line-height:1.75;color:#3A2C22}
+.did li::before{content:"";position:absolute;left:2px;top:.62em;width:7px;height:7px;border-radius:50%;background:#E8A277}
+
+.loop{margin:0;padding:0;list-style:none}
+.loop li{display:grid;grid-template-columns:64px 14px 1fr;align-items:start;gap:0 10px;padding-bottom:18px}
+.loop li:last-child{padding-bottom:0}
+.loop .when{font-size:13px;color:#94795F;padding-top:2px;line-height:1.6}
+.loop .dot{position:relative;display:flex;justify-content:center;height:100%}
+.loop .dot::before{content:"";position:absolute;top:0;bottom:-18px;width:1px;background:#E2D4C3}
+.loop li:last-child .dot::before{display:none}
+.loop .dot i{position:relative;width:9px;height:9px;border-radius:50%;background:#E24E22;margin-top:5px;z-index:1}
+.loop .what{font-size:14.5px;line-height:1.7;color:#33281D}
+.loop .what b{display:block;font-weight:600}
+
+.tech{margin:0;padding:0;list-style:none;font-size:14px;line-height:1.9;color:#3A2C22}
+.tech li{display:flex;gap:8px;align-items:baseline}
+.tech code{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:12.5px;
+  background:#EFE2D3;color:#8A4A2C;padding:1px 6px;border-radius:4px;white-space:nowrap}
+.note{margin-top:14px;font-size:13.5px;line-height:1.7;color:#8A7564;padding:12px 14px;
+  border-left:2px solid #E8C7AF;background:rgba(255,255,255,.55)}
+
+.stage{justify-self:center}
+.device{position:sticky;top:22px;width:375px}
+.frame{width:100%;padding:11px;border-radius:50px;
+  background:linear-gradient(155deg,#3B2C22 0%,#241A14 45%,#170F0B 100%);
+  box-shadow:0 44px 70px -30px rgba(60,38,20,.5),0 3px 10px rgba(40,24,12,.22),
+             inset 0 0 0 1px rgba(255,255,255,.07)}
+.screen{position:relative;height:812px;border-radius:40px;overflow:hidden;container-type:inline-size;
+  background:#FFF4E8;display:flex;flex-direction:column;isolation:isolate}
+.notch{position:absolute;top:10px;left:50%;transform:translateX(-50%);width:104px;height:26px;
+  border-radius:14px;background:#170F0B;z-index:60;box-shadow:inset 0 1px 0 rgba(255,255,255,.12)}
+.caption{margin:22px 0 0;font-size:13px;line-height:1.7;color:#94795F;text-align:center;max-width:335px}
+.caption b{color:#E24E22;font-weight:600}
+
+@media (max-width:900px){
+  .wrap{padding:0}
+  .mast,.brief,.caption{display:none}
+  .grid{display:block;margin:0}
+  .stage{justify-self:stretch}
+  .device{position:static;width:100%}
+  .frame{padding:0;border-radius:0;background:#FFF4E8;box-shadow:none}
+  .screen{height:100dvh;border-radius:0}
+  .notch{display:none}
+  .nbar{padding-top:14px}
+}
+
+/* ============ 手机内：小程序复刻 ============ */
+.screen{--r:.13333cqw;
+  --ink:#2A2118;--sub:#8A7564;--pri:#FF6B3D;--pri-d:#E24E22;--ok:#1FA971;--yellow:#F4C430;
+  --bg:#FFF4E8;
+  font-family:"PingFang SC","Microsoft YaHei","Noto Sans SC",-apple-system,sans-serif;
+  color:var(--ink);background:var(--bg);font-size:calc(32 * var(--r));
+}
+/* 自定义导航条（复刻 navigation-bar 组件：无标题，仅状态条高度 + 可选返回） */
+.nbar{flex:none;display:flex;align-items:center;background:var(--bg);color:var(--ink);
+  padding:max(calc(36 * var(--r)),36px) calc(24 * var(--r)) calc(6 * var(--r));transition:background .25s,color .25s}
+.nbar.on-pri{background:var(--pri);color:#fff}
+.nback{width:calc(64 * var(--r));height:calc(64 * var(--r));display:flex;align-items:center;justify-content:center;
+  border-radius:50%;color:inherit;opacity:.9}
+.nback svg{width:calc(40 * var(--r));height:calc(40 * var(--r))}
+.nback:active{opacity:.6}
+.nback[hidden]{display:none}
+
+.body{flex:1;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch;position:relative;
+  scrollbar-width:none;display:flex;flex-direction:column}
+.body::-webkit-scrollbar{display:none}
+
+.pg{padding:calc(24 * var(--r)) calc(48 * var(--r)) calc(48 * var(--r));display:flex;flex-direction:column;
+  min-height:100%;flex:1}
+.view{display:none;flex:1;flex-direction:column;min-height:0}
+.view.is-on{display:flex}
+
+/* 1. 首页 */
+.hero{margin-top:calc(16 * var(--r))}
+.h1{font-size:calc(80 * var(--r));font-weight:700;color:var(--pri);line-height:1.15;letter-spacing:calc(-2 * var(--r))}
+.sub{margin-top:calc(20 * var(--r));font-size:calc(32 * var(--r));line-height:1.5;color:var(--sub)}
+
+.pcard{margin-top:calc(40 * var(--r));padding:calc(8 * var(--r)) calc(36 * var(--r));background:#fff;
+  border-radius:calc(24 * var(--r));box-shadow:0 calc(8 * var(--r)) calc(32 * var(--r)) rgba(42,33,24,.06)}
+.rule{display:flex;align-items:center;height:calc(88 * var(--r));font-size:calc(34 * var(--r));font-weight:600}
+.rule .rd{width:calc(16 * var(--r));height:calc(16 * var(--r));border-radius:50%;background:var(--pri);
+  margin-right:calc(20 * var(--r));flex:none}
+.rule{color:var(--ink)}
+
+.sect{display:block;margin-top:calc(40 * var(--r));font-size:calc(30 * var(--r));font-weight:700;color:var(--ink)}
+.cats{display:flex;flex-wrap:wrap;justify-content:space-between;margin-top:calc(20 * var(--r))}
+.cat{width:48%;margin-bottom:calc(20 * var(--r));padding:calc(26 * var(--r)) calc(24 * var(--r));
+  background:#fff;border-radius:calc(24 * var(--r));border:calc(4 * var(--r)) solid transparent;
+  box-shadow:0 calc(8 * var(--r)) calc(32 * var(--r)) rgba(42,33,24,.06);text-align:left;
+  transition:border-color .18s,background .18s}
+.cat.on{border-color:var(--pri);background:#FFF8F4}
+.cat:active{transform:scale(.985)}
+.cat-name{display:block;font-size:calc(36 * var(--r));font-weight:700;color:var(--ink)}
+.cat-count{display:block;margin-top:calc(8 * var(--r));font-size:calc(26 * var(--r));color:var(--sub)}
+
+.btn{height:calc(96 * var(--r));border-radius:calc(999 * var(--r));display:flex;align-items:center;justify-content:center;
+  font-size:calc(34 * var(--r));font-weight:700;transition:background .18s,transform .12s;width:100%}
+.btn:active{transform:scale(.985)}
+.btn-pri{background:var(--pri);color:#fff}
+.btn-pri:active{background:var(--pri-d)}
+.btn-ghost{background:#fff;color:var(--ink);border:calc(2 * var(--r)) solid #E7D9CC}
+.btn-ghost:active{background:var(--bg)}
+.start{margin-top:calc(28 * var(--r));margin-bottom:calc(8 * var(--r));flex:none}
+
+/* 2. 准备页 */
+.ready{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:calc(24 * var(--r));
+  padding:calc(24 * var(--r)) calc(48 * var(--r)) calc(64 * var(--r));text-align:center}
+.count{font-size:calc(160 * var(--r));font-weight:700;color:var(--pri);line-height:1;animation:pop .9s ease both}
+.hint{font-size:calc(32 * var(--r));color:var(--sub);line-height:1.6;max-width:22ch}
+
+/* 3. 游戏页 */
+.game{flex:1;display:flex;flex-direction:column;background:var(--pri);
+  padding:calc(24 * var(--r)) calc(48 * var(--r)) calc(40 * var(--r))}
+.time{align-self:center;font-size:calc(56 * var(--r));font-weight:700;color:#fff;opacity:.92;letter-spacing:calc(2 * var(--r))}
+.wordwrap{flex:1;display:flex;align-items:center;justify-content:center;padding:calc(24 * var(--r)) 0}
+.word{font-size:calc(96 * var(--r));font-weight:700;line-height:1.3;color:#fff;text-align:center;word-break:break-word}
+.word.swap{animation:swap .32s ease both}
+.actions{display:flex;gap:calc(24 * var(--r));flex:none}
+.skip,.correct{flex:1;height:calc(96 * var(--r));border-radius:calc(999 * var(--r));display:flex;align-items:center;
+  justify-content:center;font-size:calc(34 * var(--r));font-weight:700;transition:background .15s,transform .12s}
+.skip{background:var(--yellow);color:var(--ink)}
+.skip:active{background:#E0B01E;transform:scale(.985)}
+.correct{background:var(--ok);color:#fff}
+.correct:active{background:#178A5C;transform:scale(.985)}
+
+/* 4. 结算页 */
+.result .rcard{margin-top:calc(24 * var(--r));padding:calc(48 * var(--r)) calc(36 * var(--r)) calc(36 * var(--r));
+  background:#fff;border-radius:calc(24 * var(--r));box-shadow:0 calc(8 * var(--r)) calc(32 * var(--r)) rgba(42,33,24,.06)}
+.score{display:block;text-align:center;font-size:calc(120 * var(--r));font-weight:700;line-height:1;color:var(--ok)}
+.summary{display:block;margin-top:calc(12 * var(--r));text-align:center;font-size:calc(34 * var(--r));color:var(--ink)}
+.rblk{margin-top:calc(40 * var(--r))}
+.rlab{display:block;margin-bottom:calc(16 * var(--r));font-size:calc(28 * var(--r));color:var(--sub)}
+.tags{display:flex;flex-wrap:wrap}
+.tag{margin:0 calc(16 * var(--r)) calc(16 * var(--r)) 0;padding:calc(13 * var(--r)) calc(26 * var(--r));
+  border-radius:calc(999 * var(--r));font-size:calc(30 * var(--r));font-weight:600}
+.tag.ok{background:rgba(31,169,113,.12);color:var(--ok)}
+.tag.sk{background:#F3EBE3;color:var(--sub)}
+.again{margin-top:auto;margin-bottom:calc(24 * var(--r));flex:none}
+.rghost{flex:none;margin-bottom:calc(8 * var(--r))}
+
+@keyframes pop{0%{transform:scale(.6);opacity:0}45%{transform:scale(1.06);opacity:1}100%{transform:scale(1);opacity:1}}
+@keyframes swap{0%{opacity:0;transform:translateY(calc(16 * var(--r)))}100%{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){.count,.word.swap{animation:none}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="mast">
+    <div class="mast-id"><b>王皓莹</b>产品策划 · 交互设计 · Demo 实现</div>
+    <div class="mast-no">作品复刻 02 / <em>02</em></div>
+  </header>
+
+  <div class="grid">
+    <main class="brief">
+      <h2>疯狂猜词</h2>
+      <p class="tagline">把手机举到额头，让朋友描述这个词——一局 60 秒，猜对 +1，跳过不计分。</p>
+
+      <dl class="facts">
+        <dt>类型</dt><dd>微信小程序 Demo · H5 复刻版</dd>
+        <dt>时间</dt><dd>2025.11</dd>
+        <dt>角色</dt><dd>玩法设计 · 交互流程 · 前端实现</dd>
+        <dt>状态</dt><dd class="state">在线可玩，60 秒一局</dd>
+      </dl>
+
+      <section class="blk">
+        <h3>我做了什么</h3>
+        <ul class="did">
+          <li>把一个「聚会时没东西玩」的模糊场景，收敛成 4 屏、单局 60 秒的最小规则闭环。</li>
+          <li>按难度分层做 4 个词库共 57 个词（动物 / 美食 / 动作 / 生活），一局内不重复。</li>
+          <li>定义按钮语义：猜对是绿、跳过是黄。举着手机时凭颜色就能选对，不用读屏。</li>
+          <li>去掉系统标题栏，把整屏让给一个大字——远距离、仰头、斜着看都要能读清。</li>
+        </ul>
+      </section>
+
+      <section class="blk">
+        <h3>一局的流程</h3>
+        <ul class="loop">
+          <li><span class="when">第 1 步</span><span class="dot"><i></i></span>
+            <span class="what"><b>选词库</b>动物、美食、动作、生活，四选一，本局只用这一类词。</span></li>
+          <li><span class="when">第 2 步</span><span class="dot"><i></i></span>
+            <span class="what"><b>3 · 2 · 1</b>倒计时结束后把屏幕对着朋友，举到额头。</span></li>
+          <li><span class="when">第 3 步</span><span class="dot"><i></i></span>
+            <span class="what"><b>60 秒抢答</b>一个词一屏，猜对按绿、跳过按黄，词用完即结束。</span></li>
+          <li><span class="when">第 4 步</span><span class="dot"><i></i></span>
+            <span class="what"><b>结算复盘</b>得分、猜对的词、跳过的词全部列出，可再来一局。</span></li>
+        </ul>
+      </section>
+
+      <section class="blk">
+        <h3>小程序 → H5 的等价替换</h3>
+        <ul class="tech">
+          <li><code>4 个 pages</code> → 同页 4 个视图，hash 式切换，返回键可回首页</li>
+          <li><code>getApp().globalData</code> → 单例 store，一局的词表、得分、跳过词跨屏传递</li>
+          <li><code>setInterval</code> → 同一套计时器，切走或结束立即 clear，避免后台偷跑</li>
+          <li><code>rpx</code> → <code>cqw</code> 容器单位，手机壳内与全屏等比一致</li>
+          <li><code>wx.redirectTo / reLaunch</code> → 视图切换 + 状态重置，不走浏览器历史</li>
+        </ul>
+        <p class="note">词库与原版一致（57 个词），未做联网词库、音效与多人房间——原版就是这样一局一结算的纯前端 Demo。</p>
+      </section>
+    </main>
+
+    <div class="stage">
+      <div class="device">
+        <div class="frame">
+          <div class="screen">
+            <div class="notch"></div>
+            <header class="nbar" id="nbar">
+              <button class="nback" id="nback" hidden aria-label="返回首页">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M15 5 8 12l7 7"/></svg>
+              </button>
+            </header>
+
+            <div class="body" id="body">
+
+              <!-- ===== 视图：首页 ===== -->
+              <section class="view is-on" data-view="index">
+                <div class="pg">
+                  <div class="hero">
+                    <div class="h1">疯狂猜词</div>
+                    <div class="sub">把手机举到额头，让朋友描述这个词</div>
+                  </div>
+                  <div class="pcard">
+                    <div class="rule"><i class="rd"></i><span>每局 60 秒</span></div>
+                    <div class="rule"><i class="rd"></i><span>猜对 +1 分</span></div>
+                    <div class="rule"><i class="rd"></i><span>跳过不加分</span></div>
+                  </div>
+                  <span class="sect">选择词库</span>
+                  <div class="cats" id="cats"></div>
+                  <button class="btn btn-pri start" id="btnStart">开始游戏</button>
+                </div>
+              </section>
+
+              <!-- ===== 视图：准备 ===== -->
+              <section class="view" data-view="ready">
+                <div class="ready">
+                  <div class="count" id="count">3</div>
+                  <div class="hint">准备好后把屏幕对着朋友，举到额头</div>
+                </div>
+              </section>
+
+              <!-- ===== 视图：游戏 ===== -->
+              <section class="view" data-view="game">
+                <div class="game">
+                  <div class="time" id="time">60</div>
+                  <div class="wordwrap"><div class="word" id="word">长颈鹿</div></div>
+                  <div class="actions">
+                    <button class="skip" id="btnSkip">跳过</button>
+                    <button class="correct" id="btnCorrect">猜对了</button>
+                  </div>
+                </div>
+              </section>
+
+              <!-- ===== 视图：结算 ===== -->
+              <section class="view" data-view="result">
+                <div class="pg result">
+                  <div class="rcard">
+                    <span class="score" id="score">0</span>
+                    <span class="summary" id="summary">猜对了 0 个</span>
+                    <div class="rblk" id="blkOk">
+                      <span class="rlab">猜对</span>
+                      <div class="tags" id="tagsOk"></div>
+                    </div>
+                    <div class="rblk" id="blkSk">
+                      <span class="rlab">跳过</span>
+                      <div class="tags" id="tagsSk"></div>
+                    </div>
+                  </div>
+                  <button class="btn btn-pri again" id="btnAgain">再来一局</button>
+                  <button class="btn btn-ghost rghost" id="btnHome">返回首页</button>
+                </div>
+              </section>
+            </div>
+          </div>
+        </div>
+      </div>
+      <p class="caption">手机打开即全屏；点<b>开始游戏</b>就能真玩一局，词库 57 个词随机不重复。</p>
+    </div>
+  </div>
+</div>
+<script>
+(function(){
+  "use strict";
+  var $ = function(id){ return document.getElementById(id); };
+
+  /* 词库：与 utils/words.js 完全一致，共 57 个词 */
+  var BANKS = [
+    { id:'animal', name:'动物', words:['长颈鹿','企鹅','熊猫','章鱼','袋鼠','孔雀','刺猬','海豚','老虎','兔子','大象','考拉'] },
+    { id:'food', name:'美食', words:['火锅','冰淇淋','烤串','芒果','饺子','爆米花','柠檬','棉花糖','披萨','寿司','奶茶','汉堡'] },
+    { id:'action', name:'动作', words:['刷牙','跳绳','打喷嚏','跳高','拍照','跳舞','游泳','放风筝','骑自行车','照镜子','喝咖啡','挤地铁'] },
+    { id:'daily', name:'生活', words:['雨伞','滑板','望远镜','气球','闹钟','耳机','行李箱','洗衣机','电风扇','摩天轮','向日葵','热气球','孙悟空','超人','圣诞老人','魔法师','加班','相亲','堵车','减肥','考试'] }
+  ];
+
+  var store = { categoryId: 'animal', round: null };
+  var deck = [], idx = 0, correct = [], skipped = [], ended = false;
+  var timer = null, readyTimer = null, left = 60, curView = 'index';
+
+  function clearTimers(){
+    if(timer){ clearInterval(timer); timer = null; }
+    if(readyTimer){ clearInterval(readyTimer); readyTimer = null; }
+  }
+  function shuffle(list){
+    var d = list.slice();
+    for(var i = d.length - 1; i > 0; i--){ var j = Math.floor(Math.random() * (i + 1)); var t = d[i]; d[i] = d[j]; d[j] = t; }
+    return d;
+  }
+
+  /* ---------- 视图切换 ---------- */
+  function go(view){
+    clearTimers();
+    curView = view;
+    Array.prototype.forEach.call(document.querySelectorAll('.view'), function(v){
+      v.classList.toggle('is-on', v.dataset.view === view);
+    });
+    var bar = $('nbar');
+    bar.classList.toggle('on-pri', view === 'game');
+    $('nback').hidden = (view !== 'ready');
+    $('body').scrollTop = 0;
+    if(view === 'game'){ drawWord(); }
+  }
+
+  /* ---------- 首页 ---------- */
+  function renderCats(){
+    $('cats').innerHTML = BANKS.map(function(b){
+      return '<button class="cat ' + (b.id === store.categoryId ? 'on' : '') + '" data-cat="' + b.id + '">' +
+        '<span class="cat-name">' + b.name + '</span>' +
+        '<span class="cat-count">' + b.words.length + ' 个词</span></button>';
+    }).join('');
+  }
+  document.addEventListener('click', function(e){
+    var c = e.target.closest('[data-cat]');
+    if(c){ store.categoryId = c.dataset.cat; renderCats(); return; }
+  });
+  $('btnStart').addEventListener('click', startRound);
+
+  /* ---------- 一局开始：3-2-1 ---------- */
+  function startRound(){
+    clearTimers();
+    var bank = BANKS.filter(function(b){ return b.id === store.categoryId; })[0] || BANKS[0];
+    deck = shuffle(bank.words);
+    idx = 0; correct = []; skipped = []; ended = false; left = 60;
+    $('time').textContent = '60';
+    $('count').textContent = '3';
+    $('count').style.animation = 'none';
+    go('ready');
+    void $('count').offsetWidth;
+    $('count').style.animation = '';
+    var c = 3;
+    readyTimer = setInterval(function(){
+      c -= 1;
+      if(c <= 0){ clearInterval(readyTimer); readyTimer = null; beginGame(); return; }
+      var el = $('count');
+      el.textContent = c;
+      el.style.animation = 'none';
+      void el.offsetWidth;
+      el.style.animation = '';
+    }, 1000);
+  }
+
+  function beginGame(){
+    go('game');
+    drawWord();
+    timer = setInterval(function(){
+      left -= 1;
+      $('time').textContent = String(left);
+      if(left <= 0){ finish(); }
+    }, 1000);
+  }
+
+  function drawWord(){
+    var el = $('word');
+    el.textContent = deck[idx] || '';
+    el.classList.remove('swap');
+    void el.offsetWidth;
+    el.classList.add('swap');
+  }
+
+  $('btnSkip').addEventListener('click', function(){ mark('skip'); });
+  $('btnCorrect').addEventListener('click', function(){ mark('correct'); });
+
+  function mark(type){
+    if(ended || !deck[idx]){ return; }
+    if(type === 'correct'){ correct.push(deck[idx]); } else { skipped.push(deck[idx]); }
+    idx += 1;
+    if(idx >= deck.length){ finish(); return; }
+    drawWord();
+  }
+
+  function finish(){
+    if(ended){ return; }
+    ended = true;
+    clearTimers();
+    store.round = { score: correct.length, correct: correct.slice(), skipped: skipped.slice() };
+    renderResult();
+    go('result');
+  }
+
+  /* ---------- 结算 ---------- */
+  function renderResult(){
+    var r = store.round || { score: 0, correct: [], skipped: [] };
+    $('score').textContent = String(r.score);
+    $('summary').textContent = '猜对了 ' + r.score + ' 个';
+    $('tagsOk').innerHTML = r.correct.map(function(w){ return '<span class="tag ok">' + w + '</span>'; }).join('');
+    $('tagsSk').innerHTML = r.skipped.map(function(w){ return '<span class="tag sk">' + w + '</span>'; }).join('');
+    $('blkOk').hidden = r.correct.length === 0;
+    $('blkSk').hidden = r.skipped.length === 0;
+  }
+
+  $('btnAgain').addEventListener('click', startRound);
+  $('btnHome').addEventListener('click', function(){ go('index'); });
+  $('nback').addEventListener('click', function(){ go('index'); });
+
+  /* 手机端返回手势/浏览器后退键：回到首页而不是退出 */
+  window.addEventListener('hashchange', function(){ if(curView !== 'index') go('index'); });
+
+  renderCats();
+  go('index');
+})();
+</script>
+</body>
+</html>
