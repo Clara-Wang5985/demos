@@ -915,42 +915,37 @@ button{font:inherit;color:inherit;border:0;background:none;cursor:pointer}
     for(var i = 0; i < AREAS.length; i++){ if(AREAS[i].n === name) return i; }
     return -1;
   }
-  /* 两个分区之间的走法：沿两者的公共主干走到分叉点，再走另一条分支 */
-  function routeBetween(a, b){
-    if(a === b) return [AREAS[a].pos];
-    var ra = AREAS[a].rt, rb = AREAS[b].rt, k = 0;
-    while(k + 1 < ra.length && k + 1 < rb.length &&
-          ra[k + 1][0] === rb[k + 1][0] && ra[k + 1][1] === rb[k + 1][1]) k++;
-    var back = ra.slice(k).reverse();
-    var fwd = rb.slice(k + 1);
-    return back.concat(fwd);
-  }
-  /* 动线 = 入口 → 已打卡分区（按打卡先后） → 当前查看的分区 */
+  /* 动线：入口 → 第 2 站 → 第 3 站 … 依次接上，形成一条连续的游览路 */
   function buildTour(sel){
     var order = state.checked.map(areaIdx).filter(function(i){ return i > 0; });
     var seq = [0];
     order.forEach(function(i){ if(seq.indexOf(i) < 0) seq.push(i); });
+    var step = seq.length;
     if(sel !== null && sel !== undefined){
       var at = seq.indexOf(sel);
-      if(at > -1) seq = seq.slice(0, at + 1);
-      else seq.push(sel);
+      if(at > -1) step = at + 1;
+      else { seq.push(sel); step = seq.length; }
     }
-    var pts = [];
-    for(var i = 0; i < seq.length - 1; i++){
-      routeBetween(seq[i], seq[i + 1]).forEach(function(q, idx){
-        if(idx === 0 && pts.length) return;
-        pts.push(q);
-      });
-    }
-    return {pts: pts, seq: seq, labels: seq.map(function(i){ return AREAS[i].lb; })};
+    return {pts: seq.map(function(i){ return AREAS[i].pos; }), seq: seq, step: step,
+            labels: seq.map(function(i){ return AREAS[i].lb; })};
   }
-  /* 信息卡高度会让地图让出对应空间，保证任何分区标记都不会被卡片压住 */
-  function fitMapBox(){
-    requestAnimationFrame(function(){
-      var sheet = $('mSheet'), wrap = document.querySelector('.mapwrap');
-      if(!sheet || !wrap) return;
-      wrap.style.paddingBottom = (sheet.offsetHeight + 10) + 'px';
-    });
+  /* 过点的平滑曲线，避免折线生硬（Catmull-Rom → 三次贝塞尔） */
+  function smoothPath(pts){
+    if(pts.length < 2) return '';
+    if(pts.length === 2) return 'M' + pts[0].join(' ') + ' L' + pts[1].join(' ');
+    var clamp = function(v, a, b){ return Math.max(a, Math.min(b, v)); };
+    var d = 'M' + pts[0].join(' ') + ' ';
+    for(var i = 0; i < pts.length - 1; i++){
+      var p0 = pts[i - 1] || pts[i], p1 = pts[i], p2 = pts[i + 1], p3 = pts[i + 2] || pts[i + 1];
+      var k = 0.22;
+      var c1x = clamp(p1[0] + (p2[0] - p0[0]) * k, 0, 337);
+      var c1y = clamp(p1[1] + (p2[1] - p0[1]) * k, 0, 648);
+      var c2x = clamp(p2[0] - (p3[0] - p1[0]) * k, 0, 337);
+      var c2y = clamp(p2[1] - (p3[1] - p1[1]) * k, 0, 648);
+      d += 'C' + c1x.toFixed(1) + ' ' + c1y.toFixed(1) + ' ' +
+           c2x.toFixed(1) + ' ' + c2y.toFixed(1) + ' ' + p2[0] + ' ' + p2[1] + ' ';
+    }
+    return d;
   }
   function renderMap(){
     $('mChips').innerHTML = AREAS.map(function(a, i){
@@ -973,8 +968,7 @@ button{font:inherit;color:inherit;border:0;background:none;cursor:pointer}
 
     var a = mapSel === null ? null : AREAS[mapSel];
     var tour = buildTour(mapSel);
-    var d = tour.pts.length > 1
-      ? 'M' + tour.pts.map(function(p){ return p[0] + ' ' + p[1]; }).join(' L') : '';
+    var d = smoothPath(tour.pts);
     $('mrt').setAttribute('d', d);
     $('mrtCase').setAttribute('d', d);
 
@@ -989,7 +983,7 @@ button{font:inherit;color:inherit;border:0;background:none;cursor:pointer}
     var isDone = state.checked.indexOf(a.n) > -1;
     $('mSheet').innerHTML =
       '<div class="mt">' + a.n + '<span class="sn">' + a.stamp + '</span>' +
-        (tour.seq.length > 1 ? '<span class="mtour">第 ' + tour.seq.length + ' 站 · ' + tour.labels.join(' › ') + '</span>' : '') +
+        (tour.seq.length > 1 ? '<span class="mtour">第 ' + tour.step + ' 站 · ' + tour.labels.join(' › ') + '</span>' : '') +
         '</div>' +
       '<div class="md">' + esc(a.d) + ' ｜ ' + a.ip + '</div>' +
       '<div class="mact">' +
