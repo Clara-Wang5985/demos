@@ -117,6 +117,9 @@ button{font:inherit;color:inherit;border:0;background:none;cursor:pointer}
   z-index:20;
 }
 .appbar .ttl{font-size:calc(34 * var(--r));font-weight:600;letter-spacing:calc(1 * var(--r))}
+.appback{position:absolute;left:calc(16 * var(--r));top:max(calc(46 * var(--r)),42px);
+  display:flex;align-items:center;gap:calc(3 * var(--r));height:calc(40 * var(--r));
+  padding-right:calc(8 * var(--r));font-size:calc(26 * var(--r));font-weight:600;color:#fff;opacity:.94}
 /* 滚动区 */
 .body{flex:1;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch;position:relative;scrollbar-width:none}
 .body::-webkit-scrollbar{display:none}
@@ -406,6 +409,8 @@ button{font:inherit;color:inherit;border:0;background:none;cursor:pointer}
   background:#EAF3DC;color:#33691E;font-size:calc(20 * var(--r));font-weight:600}
 .msheet .mt.slim{justify-content:space-between;padding:calc(2 * var(--r)) 0}
 .msheet .mt .mhint{font-size:calc(20 * var(--r));font-weight:500;color:#5E7A66;text-align:right}
+.msheet .mt .mtour{margin-left:auto;max-width:56%;font-size:calc(19 * var(--r));font-weight:500;color:#6B8574;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .msheet .md{margin-top:calc(8 * var(--r));font-size:calc(24 * var(--r));line-height:1.55;color:#4B6353}
 .msheet .mact{display:flex;gap:calc(12 * var(--r));margin-top:calc(16 * var(--r))}
 .mbtn{flex:1;display:flex;align-items:center;justify-content:center;height:calc(72 * var(--r));
@@ -485,7 +490,7 @@ button{font:inherit;color:inherit;border:0;background:none;cursor:pointer}
         <div class="frame">
           <div class="screen">
             <div class="notch"></div>
-            <header class="appbar"><span class="ttl" id="appTitle">森灵小队</span></header>
+            <header class="appbar"><button class="appback" id="appBack" type="button" hidden>‹ 返回</button><span class="ttl" id="appTitle">森灵小队</span></header>
 
             <div class="body" id="body">
 
@@ -788,12 +793,15 @@ button{font:inherit;color:inherit;border:0;background:none;cursor:pointer}
 
   var TITLES = { home:'森灵小队', checkin:'打卡集章', diary:'森灵日记', mine:'我的', map:'分区地图' };
   var cur = 'home';
+  var prevView = null;
   function go(view){
     if(!TITLES[view]) return;
+    if(cur && cur !== view) prevView = cur;
     cur = view;
     Array.prototype.forEach.call(document.querySelectorAll('.view'), function(v){ v.classList.toggle('is-on', v.dataset.view === view); });
     Array.prototype.forEach.call(document.querySelectorAll('.tab'), function(t){ t.classList.toggle('on', t.dataset.go === view); });
     $('appTitle').textContent = TITLES[view];
+    $('appBack').hidden = (view !== 'map');
     $('body').scrollTop = 0;
     if(location.hash !== '#' + view){ try{ history.replaceState(null, '', '#' + view); }catch(e){} }
     if(view === 'mine') renderMine();
@@ -903,6 +911,47 @@ button{font:inherit;color:inherit;border:0;background:none;cursor:pointer}
 
   /* ---------- 分区导览地图 ---------- */
   var mapSel = null;
+  function areaIdx(name){
+    for(var i = 0; i < AREAS.length; i++){ if(AREAS[i].n === name) return i; }
+    return -1;
+  }
+  /* 两个分区之间的走法：沿两者的公共主干走到分叉点，再走另一条分支 */
+  function routeBetween(a, b){
+    if(a === b) return [AREAS[a].pos];
+    var ra = AREAS[a].rt, rb = AREAS[b].rt, k = 0;
+    while(k + 1 < ra.length && k + 1 < rb.length &&
+          ra[k + 1][0] === rb[k + 1][0] && ra[k + 1][1] === rb[k + 1][1]) k++;
+    var back = ra.slice(k).reverse();
+    var fwd = rb.slice(k + 1);
+    return back.concat(fwd);
+  }
+  /* 动线 = 入口 → 已打卡分区（按打卡先后） → 当前查看的分区 */
+  function buildTour(sel){
+    var order = state.checked.map(areaIdx).filter(function(i){ return i > 0; });
+    var seq = [0];
+    order.forEach(function(i){ if(seq.indexOf(i) < 0) seq.push(i); });
+    if(sel !== null && sel !== undefined){
+      var at = seq.indexOf(sel);
+      if(at > -1) seq = seq.slice(0, at + 1);
+      else seq.push(sel);
+    }
+    var pts = [];
+    for(var i = 0; i < seq.length - 1; i++){
+      routeBetween(seq[i], seq[i + 1]).forEach(function(q, idx){
+        if(idx === 0 && pts.length) return;
+        pts.push(q);
+      });
+    }
+    return {pts: pts, seq: seq, labels: seq.map(function(i){ return AREAS[i].lb; })};
+  }
+  /* 信息卡高度会让地图让出对应空间，保证任何分区标记都不会被卡片压住 */
+  function fitMapBox(){
+    requestAnimationFrame(function(){
+      var sheet = $('mSheet'), wrap = document.querySelector('.mapwrap');
+      if(!sheet || !wrap) return;
+      wrap.style.paddingBottom = (sheet.offsetHeight + 10) + 'px';
+    });
+  }
   function renderMap(){
     $('mChips').innerHTML = AREAS.map(function(a, i){
       return '<button class="mchip' + (mapSel === i ? ' on' : '') + '" data-mchip="' + i + '">' +
@@ -923,24 +972,37 @@ button{font:inherit;color:inherit;border:0;background:none;cursor:pointer}
     }).join('');
 
     var a = mapSel === null ? null : AREAS[mapSel];
-    var d = a ? 'M' + a.rt.map(function(p){ return p[0] + ' ' + p[1]; }).join(' L') : '';
+    var tour = buildTour(mapSel);
+    var d = tour.pts.length > 1
+      ? 'M' + tour.pts.map(function(p){ return p[0] + ' ' + p[1]; }).join(' L') : '';
     $('mrt').setAttribute('d', d);
     $('mrtCase').setAttribute('d', d);
 
     if(!a){
-      $('mSheet').innerHTML = '<div class="mt slim">分区导览图<span class="mhint">点编号看路线</span></div>';
+      var hintTxt = state.checked.length
+        ? '已连成 ' + state.checked.length + ' 站动线 · 点分区继续'
+        : '点编号或标签，看动线';
+      $('mSheet').innerHTML = '<div class="mt slim">分区导览图<span class="mhint">' + hintTxt + '</span></div>';
+      fitMapBox();
       return;
     }
     var isDone = state.checked.indexOf(a.n) > -1;
     $('mSheet').innerHTML =
-      '<div class="mt">' + a.n + '<span class="sn">' + a.stamp + '</span></div>' +
+      '<div class="mt">' + a.n + '<span class="sn">' + a.stamp + '</span>' +
+        (tour.seq.length > 1 ? '<span class="mtour">第 ' + tour.seq.length + ' 站 · ' + tour.labels.join(' › ') + '</span>' : '') +
+        '</div>' +
       '<div class="md">' + esc(a.d) + ' ｜ ' + a.ip + '</div>' +
       '<div class="mact">' +
         (isDone ? '<button class="mbtn gho" disabled>已盖章</button>'
                 : '<button class="mbtn pri" data-mact="stamp">立即打卡</button>') +
         '<button class="mbtn gho" data-mact="close">收起</button>' +
       '</div>';
+    fitMapBox();
   }
+
+  $('appBack').addEventListener('click', function(){
+    go(prevView && prevView !== 'map' ? prevView : 'checkin');
+  });
 
   document.addEventListener('click', function(e){
     var pin = e.target.closest ? e.target.closest('[data-mpin]') : null;
