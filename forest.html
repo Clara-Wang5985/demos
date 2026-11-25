@@ -21,18 +21,8 @@ img,svg{display:block}
 button{font:inherit;color:inherit;border:0;background:none;cursor:pointer}
 .wrap{max-width:1272px;margin:0 auto;padding:clamp(26px,4vw,68px) clamp(20px,4vw,56px) 76px}
 
-/* 刊头 */
-.mast{
-  display:flex;align-items:flex-end;justify-content:space-between;gap:20px;
-  border-bottom:1px solid #D2DCC3;padding-bottom:14px;
-}
-.mast-id{font-size:13.5px;line-height:1.5;color:#5C7052;letter-spacing:.01em}
-.mast-id b{display:block;font-size:15px;font-weight:600;color:#1B2A1E;letter-spacing:.02em}
-.mast-no{font-size:13.5px;color:#7A8C6E;white-space:nowrap}
-.mast-no em{font-style:normal;font-weight:600;color:#2E7D32}
-
 /* 双栏 */
-.grid{display:grid;grid-template-columns:minmax(320px,430px) 375px;gap:clamp(36px,6vw,104px);justify-content:center;margin-top:clamp(32px,5vw,64px)}
+.grid{display:grid;grid-template-columns:minmax(320px,430px) 375px;gap:clamp(36px,6vw,104px);justify-content:center;margin-top:0}
 
 /* 说明栏 */
 .brief{max-width:430px}
@@ -371,11 +361,6 @@ button{font:inherit;color:inherit;border:0;background:none;cursor:pointer}
 </head>
 <body>
 <div class="wrap">
-  <header class="mast">
-    <div class="mast-id"><b>王皓莹</b>产品策划 · 交互设计 · Demo 实现</div>
-    <div class="mast-no">作品复刻 <em>01</em> / 02</div>
-  </header>
-
   <div class="grid">
     <main class="brief">
       <h2>森灵小队</h2>
@@ -429,7 +414,7 @@ button{font:inherit;color:inherit;border:0;background:none;cursor:pointer}
           <li><code>wx.canvasToTempFilePath</code> → <code>canvas.toDataURL</code> + 浏览器下载</li>
           <li><code>wx.openLocation</code> → 唤起高德地图搜索对应园区</li>
         </ul>
-        <p class="note">仓库里 <code>pages/checkin</code> 目录未提交，打卡集章页按 4 张真机截图与 <code>mine.js</code> 的结算逻辑还原；副本里首次打开预置了示例数据，方便直接看到完成态。</p>
+        <p class="note">仓库里 <code>pages/checkin</code> 目录未提交，打卡集章页按 4 张真机截图与 <code>mine.js</code> 的结算逻辑还原；副本默认从零开始，你可以在「我的」页一键载入示例数据看完成态。</p>
       </section>
     </main>
 
@@ -554,9 +539,10 @@ button{font:inherit;color:inherit;border:0;background:none;cursor:pointer}
                   </div>
 
                   <div class="scard">
-                    <button class="menu" id="btnReset"><span>重置所有探险数据</span><span class="chev">›</span></button>
+                    <button class="menu" id="btnSeed"><span>载入示例数据（2 个分区 · 2 篇日记）</span><span class="chev">›</span></button>
+                    <button class="menu" id="btnReset"><span>清空所有探险数据</span><span class="chev">›</span></button>
                   </div>
-                  <div class="tips">数据保存在本机浏览器，清空缓存即回到示例状态</div>
+                  <div class="tips">默认从零开始，你可以自己打卡；数据保存在本机浏览器，清空缓存即回到初始状态</div>
                 </div>
               </section>
             </div>
@@ -622,11 +608,11 @@ button{font:inherit;color:inherit;border:0;background:none;cursor:pointer}
 
             <div class="mask" id="maskReset">
               <div class="sheet ipm">
-                <div class="ipmn">重置探险数据？</div>
-                <div class="ipmd" style="text-align:center">打卡记录、印章和日记都会被清空，回到示例状态。这个动作不能撤销。</div>
+                <div class="ipmn">清空探险数据？</div>
+                <div class="ipmd" style="text-align:center">打卡记录、印章和日记会被全部清空，回到从零开始的初始状态。这个动作不能撤销。</div>
                 <div class="fbtns">
                   <button class="fcancel" data-close="maskReset">再想想</button>
-                  <button class="btnp half" id="btnConfirmReset">确定重置</button>
+                  <button class="btnp half" id="btnConfirmReset">确定清空</button>
                 </div>
               </div>
             </div>
@@ -696,7 +682,7 @@ button{font:inherit;color:inherit;border:0;background:none;cursor:pointer}
         if(o && Array.isArray(o.checked) && Array.isArray(o.diary)) return o;
       }
     }catch(e){}
-    return JSON.parse(JSON.stringify(SEED));
+    return { checked: [], diary: [] };
   }
   function save(){
     try{ localStorage.setItem(KEY, JSON.stringify(state)); }
@@ -923,12 +909,17 @@ button{font:inherit;color:inherit;border:0;background:none;cursor:pointer}
     }).join('');
   }
 
+  $('btnSeed').addEventListener('click', function(){
+    state = JSON.parse(JSON.stringify(SEED)); save();
+    renderDiary(); renderMine(); renderCheckin(); renderHome();
+    toast('已载入示例数据：2 个分区 · 2 篇日记');
+  });
   $('btnReset').addEventListener('click', function(){ openMask('maskReset'); });
   $('btnConfirmReset').addEventListener('click', function(){
-    state = JSON.parse(JSON.stringify(SEED)); save();
+    state = { checked: [], diary: [] }; save();
     closeMask('maskReset');
     renderDiary(); renderMine(); renderCheckin(); renderHome();
-    toast('已重置为示例数据');
+    toast('已清空，从零开始探险');
   });
 
   /* ---------- 海报 ---------- */
